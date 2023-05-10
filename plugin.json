@@ -1,7 +1,7 @@
 {
-  "name": "siyuan-plugin-index",
+  "name": "siyuan-plugins-index",
   "author": "TinkMingKing",
-  "url": "https://github.com/TinkMingKing/siyuan-plugin-index",
+  "url": "https://github.com/TinkMingKing/siyuan-plugins-index",
   "version": "1.0.2",
   "displayName": {
     "default": "Index Plugin",
