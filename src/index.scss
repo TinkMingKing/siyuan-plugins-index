@@ -1,0 +1,10 @@
+.plugin-sample {
+  &__custom-tab {
+    background-color: var(--b3-theme-background);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
