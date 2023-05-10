@@ -14,7 +14,7 @@ export default class PluginSample extends Plugin {
             title: this.i18n.addTopBarIcon,
             position: "right",
             callback: () => {
-                main();
+                main(this.i18n.errorMsg_empty, this.i18n.errorMsg_miss);
             }
         });
 

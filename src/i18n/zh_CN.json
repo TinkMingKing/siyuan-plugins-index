@@ -4,5 +4,7 @@
   "save": "保存",
   "byeMenu": "再见，菜单！",
   "helloPlugin": "你好，插件！",
-  "byePlugin": "再见，插件！"
+  "byePlugin": "再见，插件！",
+  "errorMsg_empty": "你需要先打开一个文档，或者是在需要插入的文档中点击一下",
+  "errorMsg_miss": "当前文档下无子文档"
 }

@@ -4,5 +4,7 @@
   "save": "Save",
   "byeMenu": "Bye, Menu!",
   "helloPlugin": "Hello, Plugin!",
-  "byePlugin": "Bye, Plugin!"
+  "byePlugin": "Bye, Plugin!",
+  "errorMsg_empty": "You need to first open a document or click within the document where you want to insert",
+  "errorMsg_miss": "There are no child documents under the current document"
 }

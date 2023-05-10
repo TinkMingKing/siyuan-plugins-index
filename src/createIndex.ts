@@ -1,13 +1,13 @@
 import { fetchSyncPost } from 'siyuan';
 
-export async function main() {
+export async function main(errorMsg_empty: string, errorMsg_miss: string) {
     let parentId = getDocid();
     if (parentId == null) {
         await fetchSyncPost(
             "/api/notification/pushErrMsg",
             {
-                msg: "你需要先打开一个文档，或者是在需要插入的文档中点击一下",
-                timeout: "2000"
+                msg: errorMsg_empty,
+                timeout: 2000
             }
         );
         return;
@@ -21,8 +21,8 @@ export async function main() {
         await fetchSyncPost(
             "/api/notification/pushErrMsg",
             {
-                msg: "当前文档下无子文档",
-                timeout: "2000"
+                msg: errorMsg_miss,
+                timeout: 2000
             }
         );
 }
