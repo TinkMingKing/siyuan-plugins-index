@@ -1,35 +1,38 @@
-import { fetchSyncPost } from 'siyuan';
+import { IObject, fetchSyncPost, isMobile, showMessage } from 'siyuan';
 
-export async function main(errorMsg_empty: string, errorMsg_miss: string) {
+const STORAGE_MENU = "menu-config-icon";
+
+export async function main(i18n: IObject, sdata: any) {
     let parentId = getDocid();
     if (parentId == null) {
-        await fetchSyncPost(
-            "/api/notification/pushErrMsg",
-            {
-                msg: errorMsg_empty,
-                timeout: 2000
-            }
+        showMessage(
+            i18n.errorMsg_empty,
+            3000,
+            "error"
         );
         return;
     }
     let [box, path] = await getParentDoc(parentId);
     let data = '';
-    data = await createIndex(box, path, data);
-    if (data != '')
+    data = await createIndex(box, path, data, sdata);
+    if (data != '') {
         insertData(parentId, data);
-    else
-        await fetchSyncPost(
-            "/api/notification/pushErrMsg",
-            {
-                msg: errorMsg_miss,
-                timeout: 2000
-            }
+        showMessage(
+            i18n.msg_success,
+            3000,
+            "info"
+        );
+    } else
+        showMessage(
+            i18n.errorMsg_miss,
+            3000,
+            "error"
         );
 }
 
 //获取当前文档信息
 async function getParentDoc(parentId: string) {
-    
+
     let response = await fetchSyncPost(
         "/api/query/sql",
         {
@@ -45,7 +48,10 @@ async function getParentDoc(parentId: string) {
 
 //获取当前文档id
 function getDocid() {
-    return document.querySelector('.layout__wnd--active .protyle.fn__flex-1:not(.fn__none) .protyle-background')?.getAttribute("data-node-id");
+    if (isMobile())
+        return document.querySelector('#editor .protyle-content .protyle-background')?.getAttribute("data-node-id");
+    else
+        return document.querySelector('.layout__wnd--active .protyle.fn__flex-1:not(.fn__none) .protyle-background')?.getAttribute("data-node-id");
 }
 
 async function requestSubdoc(notebook: any, path: any) {
@@ -62,7 +68,6 @@ async function requestSubdoc(notebook: any, path: any) {
 }
 
 function getSubdocIcon(icon: string, hasChild: boolean) {
-    console.log(icon);
     if (icon == '' || icon == undefined) {
         return hasChild ? "📑" : "📄";
     } else if (icon.indexOf(".") != -1) {
@@ -79,7 +84,7 @@ function getSubdocIcon(icon: string, hasChild: boolean) {
 }
 
 //创建目录
-async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
+async function createIndex(notebook: any, ppath: any, data: string, sdata: any, tab = 0) {
 
     let docs = await requestSubdoc(notebook, ppath);
     tab++;
@@ -93,10 +98,15 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
         let path = doc.path;
         for (let n = 0; n < tab; n++)
             data += '  ';
-        data += `* ${getSubdocIcon(icon, subFileCount != 0)}[${name}](siyuan://blocks/${id})\n`;
+        if (sdata[STORAGE_MENU] == "true") {
+            data += `* ${getSubdocIcon(icon, subFileCount != 0)}[${name}](siyuan://blocks/${id})\n`;
+        } else if (sdata[STORAGE_MENU] == "false") {
+            data += `* [${name}](siyuan://blocks/${id})\n`;
+        }
+
 
         if (subFileCount > 0) {//获取下一层级子文档
-            data = await createIndex(notebook, path, data, tab);
+            data = await createIndex(notebook, path, data, sdata, tab);
         }
 
     }
@@ -110,6 +120,6 @@ async function insertData(id: string, data: string) {
             data: data,
             dataType: "markdown",
             parentID: id
-          }
+        }
     );
 }

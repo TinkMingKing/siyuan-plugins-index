@@ -6,5 +6,8 @@
   "helloPlugin": "你好，插件！",
   "byePlugin": "再见，插件！",
   "errorMsg_empty": "你需要先打开一个文档，或者是在需要插入的文档中点击一下",
-  "errorMsg_miss": "当前文档下无子文档"
+  "errorMsg_miss": "当前文档下无子文档",
+  "msg_success": "插入成功",
+  "icon_enable": "启用图标",
+  "icon_disable": "禁用图标"
 }
