@@ -8,14 +8,14 @@ export default class IndexPlugin extends Plugin {
     onload() {
         console.log(this.i18n.helloPlugin);
 
+        this.initSetting();
+
         const topBarElement = this.addTopBar({
             icon: "iconList",
             title: this.i18n.addTopBarIcon,
             position: "right",
             callback: async () => {
                 await this.loadData(STORAGE_MENU);
-                if (this.data[STORAGE_MENU] == "")
-                    this.saveData(STORAGE_MENU, true);
                 main(this.i18n, this.data);
             }
         });
@@ -30,13 +30,10 @@ export default class IndexPlugin extends Plugin {
     }
 
     private async addMenu(rect: DOMRect) {
-        console.log(this.data);
         await this.loadData(STORAGE_MENU);
-        console.log("this.data");
 
 
         const menu = new Menu("topBarSample", () => {
-            console.log(this.i18n.byeMenu);
             this.saveData(STORAGE_MENU, this.data[STORAGE_MENU]);
         });
 
@@ -53,8 +50,6 @@ export default class IndexPlugin extends Plugin {
             icon: this.data[STORAGE_MENU] == "true" ? "iconClose" : "iconSelect",
             label: this.data[STORAGE_MENU] == "true" ? this.i18n.icon_disable : this.i18n.icon_enable,
             click: () => {
-                console.log(typeof (this.data[STORAGE_MENU]));
-                console.log("123");
                 if (this.data[STORAGE_MENU] == "true") {
                     this.data[STORAGE_MENU] = false;
                 } else if (this.data[STORAGE_MENU] == "false") {
@@ -71,6 +66,16 @@ export default class IndexPlugin extends Plugin {
                 y: rect.bottom,
                 isLeft: true,
             });
+        }
+    }
+
+    async initSetting(){
+        await this.loadData(STORAGE_MENU);
+        if (this.data[STORAGE_MENU] == ""){
+            this.saveData(STORAGE_MENU, true);
+        }
+        if(this.data[STORAGE_MENU]!="true" && this.data[STORAGE_MENU]!="false"){
+            this.saveData(STORAGE_MENU, true);
         }
     }
 
