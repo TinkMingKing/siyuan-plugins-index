@@ -4,6 +4,8 @@ Insert a directory of links under the current document block, call out the setti
 
 # Changelog
 
+- Version 1.1.1
+  - fix bugs
 - Version 1.1.0
   - Added support for setting whether to insert the icon
   - Cleaned up the code
