@@ -2,7 +2,6 @@ import { openTab } from "siyuan";
 import { insert } from "./createIndex";
 import { i18n, log, plugin } from "./utils";
 import SettingsTab from "./components/setting.svelte"
-import { CONFIG } from "./settings";
 
 //tab类型
 const TAB_TYPE = "custom_tab";

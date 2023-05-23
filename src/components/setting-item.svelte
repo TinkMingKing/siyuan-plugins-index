@@ -9,7 +9,8 @@
 
     function updateSetting() {
         settings.set(settingKey,settingValue);
-        console.log("settingKey="+settingKey,"settingValue="+settingValue);
+        settings.save();
+        // console.log("settingKey="+settingKey,"settingValue="+settingValue);
         // eventBus.publish(eventBus.EventSetting, {
         //     key: settingKey,
         //     value: settingValue,

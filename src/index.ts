@@ -6,12 +6,12 @@ import { settings } from "./settings";
 
 export default class IndexPlugin extends Plugin {
 
-    onload() {
+    async onload() {
         log("IndexPlugin onload");
 
         this.init();
 
-        settings.initData();
+        await settings.initData();
 
         initTopbar();
     }

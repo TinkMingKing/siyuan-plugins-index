@@ -17,7 +17,7 @@ class Settings{
         await this.load();
 
         //配置不存在则按照默认值建立配置文件
-        if (plugin.data[CONFIG] == "" || plugin.data[CONFIG] == undefined || plugin.data[CONFIG] == null) {
+        if (plugin.data[CONFIG] === "" || plugin.data[CONFIG] === undefined || plugin.data[CONFIG] === null) {
             await plugin.saveData(CONFIG, JSON.stringify(DEFAULT_CONFIG));
         }
     }

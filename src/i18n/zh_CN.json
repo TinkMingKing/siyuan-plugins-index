@@ -16,7 +16,7 @@
     "items": {
       "depth": {
         "title": "目录索引深度",
-        "content":"设置目录索引深度,为 <code class='fn__code'>0</code> 时为无限制",
+        "content":"设置目录索引深度,为 <code class='fn__code'>0</code> 时无限制",
         "max":7,
         "min":0,
         "step":1

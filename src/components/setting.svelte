@@ -23,7 +23,7 @@
     // }
 
     onDestroy(() => {
-        // settings.save();
+        settings.save();
     });
 </script>
 

@@ -1,12 +1,12 @@
 import { fetchSyncPost, isMobile, showMessage } from 'siyuan';
-import { i18n, plugin } from './utils';
-import { CONFIG, settings } from './settings';
+import { escapeHtml, i18n } from './utils';
+import {  settings } from './settings';
 
 export async function insert() {
     //载入配置
     await settings.load();
 
-    // console.log(settings.get("icon"));
+    console.log( typeof settings.get("icon"));
 
     //寻找当前编辑的文档的id
     let parentId = getDocid();
@@ -109,12 +109,20 @@ async function createIndex(notebook: any, ppath: any, data: string, depth = 0, t
             for (let n = 0; n < tab; n++) {
                 data += '  ';
             }
+
+            // console.log(Lute.EscapeHTMLStr);
+            // name = new Lute();
+            // console.log(window.Lute.EscapeHTMLStr("123"));
+            // name = window.Lute.EscapeHTMLStr(name);
+
+            //转义
+            name = escapeHtml(name);
+            
             if (settings.get("icon")) {
                 data += `* ${getSubdocIcon(icon, subFileCount != 0)}[${name}](siyuan://blocks/${id})\n`;
             } else {
                 data += `* [${name}](siyuan://blocks/${id})\n`;
             }
-
 
             if (subFileCount > 0) {//获取下一层级子文档
                 data = await createIndex(notebook, path, data, ++depth, tab);
