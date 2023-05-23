@@ -1,12 +1,30 @@
 {
-    "addTopBarIcon": "Add a top bar icon by plugin",
-    "cancel": "Cancel",
-    "save": "Save",
-    "byeMenu": "Bye, Menu!",
-    "helloPlugin": "Hello, Plugin!",
-    "byePlugin": "Bye, Plugin!",
-    "name": "SiYuan",
-    "hello": {
-        "makesure": "Before using this template, please read the <a href=\"https://github.com/siyuan-note/plugin-sample\">offical sample</a>, make sure that you've known about the pipeline for plugin developing."
+  "addTopBarIcon": "Insert Index",
+  "cancel": "Cancel",
+  "save": "Save",
+  "byeMenu": "Bye, Menu!",
+  "helloPlugin": "Hello, Plugin!",
+  "byePlugin": "Bye, Plugin!",
+  "errorMsg_empty": "You need to first open a document or click within the document where you want to insert",
+  "errorMsg_miss": "There are no child documents under the current document",
+  "msg_success": "Insert successful",
+  "icon_enable": "icon enable",
+  "icon_disable": "icon disable",
+  "dclike": "After deleting, please do not click too quickly",
+  "settingsTab": {
+    "name":"Settings",
+    "items": {
+      "depth": {
+        "title": "Index depth",
+        "content":"Set the Index depth. If set to <code class='fn__code'>0</code> , there will be no limitation",
+        "max":7,
+        "min":0,
+        "step":1
+      },
+      "icon": {
+        "title": "Icon",
+        "content":"Set whether to display icons when inserting Index"
+      }
     }
+  }
 }
