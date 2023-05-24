@@ -6,8 +6,6 @@ export async function insert() {
     //载入配置
     await settings.load();
 
-    console.log( typeof settings.get("icon"));
-
     //寻找当前编辑的文档的id
     let parentId = getDocid();
     if (parentId == null) {
@@ -91,9 +89,9 @@ function getSubdocIcon(icon: string, hasChild: boolean) {
 }
 
 //创建目录
-async function createIndex(notebook: any, ppath: any, data: string, depth = 0, tab = 0) {
+async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
 
-    if (settings.get("depth") == 0 || settings.get("depth") > depth) {
+    if (settings.get("depth") == 0 || settings.get("depth") > tab) {
 
         let docs = await requestSubdoc(notebook, ppath);
         tab++;
@@ -125,7 +123,7 @@ async function createIndex(notebook: any, ppath: any, data: string, depth = 0, t
             }
 
             if (subFileCount > 0) {//获取下一层级子文档
-                data = await createIndex(notebook, path, data, ++depth, tab);
+                data = await createIndex(notebook, path, data, tab);
             }
 
         }
