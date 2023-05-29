@@ -3,24 +3,11 @@
     import { settings } from "../settings";
     import SettingItem from "./setting-item.svelte";
     import { i18n } from "../utils";
-    // import { onDestroy } from "svelte";
 
-    // let icon = settings.get("icon");
-    // let depth = settings.get("depth");
-    // console.log(icon);
-    // console.log(depth);
-    // let checked = settings.get("OpenOnStart");
-    // let notebookSort = settings.get("NotebookSort");
-    // let defaultNotebook = settings.get("DefaultNotebook");
-    // let iconPosition = settings.get("IconPosition");
-
-    // const dispatch = createEventDispatcher();
-
-    // export let contents;
-
-    // function onClick() {
-        // dispatch("updateAll");
-    // }
+    let sicon = settings.get("icon");
+    let sdepth = settings.get("depth");
+    let icon = sicon==undefined ? true : sicon;
+    let depth = sdepth==undefined ? 0 : sdepth;
 
     onDestroy(() => {
         settings.save();
@@ -32,12 +19,12 @@
         type="switch"
         content={i18n.settingsTab.items.icon}
         settingKey="icon"
-        settingValue={settings.get("icon")}
+        settingValue={icon}
     />
     <SettingItem
         type="range"
         content={i18n.settingsTab.items.depth}
         settingKey="depth"
-        settingValue={settings.get("depth")}
+        settingValue={depth}
     />
 </div>

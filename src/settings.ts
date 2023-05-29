@@ -20,6 +20,7 @@ class Settings{
         if (plugin.data[CONFIG] === "" || plugin.data[CONFIG] === undefined || plugin.data[CONFIG] === null) {
             await plugin.saveData(CONFIG, JSON.stringify(DEFAULT_CONFIG));
         }
+        await this.load();
     }
 
     set(key:any, value:any){

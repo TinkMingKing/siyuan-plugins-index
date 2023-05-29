@@ -1,12 +1,12 @@
 import { openTab } from "siyuan";
 import { insert } from "./createIndex";
-import { i18n, log, plugin } from "./utils";
+import { i18n, plugin } from "./utils";
 import SettingsTab from "./components/setting.svelte"
 
 //tab类型
 const TAB_TYPE = "custom_tab";
 
-export function initTopbar() {
+export async function initTopbar() {
 
     //添加顶栏按钮
     const topBarElement = plugin.addTopBar({
@@ -28,11 +28,10 @@ export function initTopbar() {
     // openTab方法的fn参数
     let customTab = plugin.addTab({
         type: TAB_TYPE,
-        init() {
+        async init() {
             this.element.appendChild(div);
         },
         destroy() {
-            log("destroy tab");
         }
     });
 

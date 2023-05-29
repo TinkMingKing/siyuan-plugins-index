@@ -8,12 +8,10 @@ export default class IndexPlugin extends Plugin {
 
     async onload() {
         log("IndexPlugin onload");
-
         this.init();
-
         await settings.initData();
-
-        initTopbar();
+        await initTopbar();
+        
     }
 
     onunload() {
