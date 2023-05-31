@@ -1,4 +1,4 @@
-import { fetchSyncPost, isMobile, showMessage } from 'siyuan';
+import { fetchSyncPost, showMessage } from 'siyuan';
 import { escapeHtml, i18n, log } from './utils';
 import {  settings } from './settings';
 import { IndexNode } from './indexnode';
@@ -68,7 +68,7 @@ async function getParentDoc(parentId: string) {
 
 //获取当前文档id
 function getDocid() {
-    if (isMobile())
+    if (this.isMobile)
         return document.querySelector('#editor .protyle-content .protyle-background')?.getAttribute("data-node-id");
     else
         return document.querySelector('.layout__wnd--active .protyle.fn__flex-1:not(.fn__none) .protyle-background')?.getAttribute("data-node-id");

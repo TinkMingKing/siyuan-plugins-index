@@ -1,3 +1,4 @@
+import { getFrontend } from "siyuan";
 import IndexPlugin from ".";
 
 export function log(data: any){
@@ -21,3 +22,7 @@ export function setPlugin(_plugin: any) {
 export const escapeHtml = (unsafe:any) => {
     return unsafe.replaceAll('[', '\\[').replaceAll(']', '\\]');
 }
+
+
+const frontEnd = getFrontend();
+export const isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile";

@@ -1,5 +1,5 @@
 import { fetchSyncPost, showMessage } from 'siyuan';
-import { escapeHtml, i18n } from './utils';
+import { escapeHtml, i18n, isMobile, log } from './utils';
 import {  settings } from './settings';
 
 export async function insert() {
@@ -51,7 +51,7 @@ async function getParentDoc(parentId: string) {
 
 //获取当前文档id
 function getDocid() {
-    if (this.isMobile)
+    if (isMobile)
         return document.querySelector('#editor .protyle-content .protyle-background')?.getAttribute("data-node-id");
     else
         return document.querySelector('.layout__wnd--active .protyle.fn__flex-1:not(.fn__none) .protyle-background')?.getAttribute("data-node-id");
