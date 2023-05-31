@@ -42,6 +42,7 @@ export async function initTopbar() {
     //设置右键监听
     topBarElement.addEventListener("contextmenu", async () => {
         openTab({
+            app:plugin.app,
             custom: {
                 icon: "iconSettings",
                 title: i18n.settingsTab.name,

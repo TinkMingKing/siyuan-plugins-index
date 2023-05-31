@@ -8,6 +8,7 @@
   "errorMsg_empty": "You need to first open a document or click within the document where you want to insert",
   "errorMsg_miss": "There are no child documents under the current document",
   "msg_success": "Insert successful",
+  "update_success":"update successful",
   "icon_enable": "icon enable",
   "icon_disable": "icon disable",
   "dclike": "After deleting, please do not click too quickly",

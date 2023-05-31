@@ -3,6 +3,7 @@ import "./index.scss";
 import { setI18n, log, setPlugin } from "./utils";
 import { initTopbar } from "./topbar";
 import { settings } from "./settings";
+import { buildDoc } from "./blockiconevent";
 
 export default class IndexPlugin extends Plugin {
 
@@ -11,6 +12,8 @@ export default class IndexPlugin extends Plugin {
         this.init();
         await settings.initData();
         await initTopbar();
+        //监听块菜单事件
+        // this.eventBus.on("click-blockicon", buildDoc);
         
     }
 
@@ -22,6 +25,5 @@ export default class IndexPlugin extends Plugin {
         setI18n(this.i18n);
         setPlugin(this);
     }
-
 
 }

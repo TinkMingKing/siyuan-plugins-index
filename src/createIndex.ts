@@ -1,4 +1,4 @@
-import { fetchSyncPost, isMobile, showMessage } from 'siyuan';
+import { fetchSyncPost, showMessage } from 'siyuan';
 import { escapeHtml, i18n } from './utils';
 import {  settings } from './settings';
 
@@ -51,7 +51,7 @@ async function getParentDoc(parentId: string) {
 
 //获取当前文档id
 function getDocid() {
-    if (isMobile())
+    if (this.isMobile)
         return document.querySelector('#editor .protyle-content .protyle-background')?.getAttribute("data-node-id");
     else
         return document.querySelector('.layout__wnd--active .protyle.fn__flex-1:not(.fn__none) .protyle-background')?.getAttribute("data-node-id");
@@ -160,6 +160,11 @@ async function insertData(id: string, data: string) {
                     }
                 }
             );
+            showMessage(
+                i18n.msg_success,
+                3000,
+                "info"
+            );
         } else {
             let result = await fetchSyncPost(
                 "/api/block/updateBlock",
@@ -177,6 +182,11 @@ async function insertData(id: string, data: string) {
                         "custom-index-create": result.data[0].doOperations[0].id
                     }
                 }
+            );
+            showMessage(
+                i18n.update_success,
+                3000,
+                "info"
             );
         }
 
