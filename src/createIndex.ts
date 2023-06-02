@@ -104,7 +104,7 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
             let icon = doc.icon;
             let subFileCount = doc.subFileCount;
             let path = doc.path;
-            for (let n = 0; n < tab; n++) {
+            for (let n = 1; n < tab; n++) {
                 data += '  ';
             }
 
@@ -190,11 +190,11 @@ async function insertData(id: string, data: string) {
             );
         }
 
-        showMessage(
-            i18n.msg_success,
-            3000,
-            "info"
-        );
+        // showMessage(
+        //     i18n.msg_success,
+        //     3000,
+        //     "info"
+        // );
     } catch (error) {
         showMessage(
             i18n.dclike,

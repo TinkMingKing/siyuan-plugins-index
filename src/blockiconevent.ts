@@ -1,3 +1,4 @@
+import { fetchSyncPost } from "siyuan";
 import { log } from "./utils";
 
 export function buildDoc({ detail }: any) {
@@ -15,12 +16,13 @@ function parseBlockDOM(detail: any) {
     if (detail.blockElements.length > 1) {
         return;
     }
-    let pblockId = detail.blockElements[0].getAttribute('data-node-id');
+    let notebookId = detail.protyle.notebookId;
+    let hpath = detail.protyle.path;
     let block = detail.blockElements[0].childNodes;
-    parseChildNodes(block);
+    parseChildNodes(notebookId,hpath,block);
 }
 
-function parseChildNodes(childNodes: any) {
+async function parseChildNodes(notebookId:string,hpath:string,childNodes: any) {
     for (const childNode of childNodes) {
         if (childNode.getAttribute('data-type') == "NodeListItem") {
             // console.log("if NodeListItem:");
@@ -28,37 +30,27 @@ function parseChildNodes(childNodes: any) {
             for (const sChildNode of sChildNodes) {
                 // console.log("for 2:");
                 if (sChildNode.getAttribute('data-type') == "NodeParagraph") {
-                    console.log(window.Lute.BlockDOM2Content(sChildNode.innerHTML));
+                    let text = window.Lute.BlockDOM2Content(sChildNode.innerHTML);
+                    let blockId = await createDoc(notebookId,hpath,text);
+                    let html = `* [${text}](siyuan://blocks/${blockId})`;
+                    console.log(text);
                 } else if (sChildNode.getAttribute('data-type') == "NodeList") {
-                    parseChildNodes(sChildNode.childNodes);
+                    parseChildNodes(notebookId,hpath,sChildNode.childNodes);
                 }
             }
         }
     }
 }
 
-// function parseChildNodes(childNodes:any){
-//         console.log("parseChildNodes function:")
-//         for (const childNode of childNodes) {
-//             // console.log("for 1:"+childNode.getAttribute('data-type'));
-//             if(childNode.getAttribute('data-type') == "NodeListItem"){
-//                 // console.log("if NodeListItem:");
-//                 let sChildNodes = childNode.childNodes;
-//                 for (const sChildNode of sChildNodes) {
-//                     // console.log("for 2:");
-//                     if(sChildNode.getAttribute('data-type') == "NodeParagraph"){
-//                         console.log(window.Lute.BlockDOM2Content(sChildNode.innerHTML));
-//                     } else if(sChildNode.getAttribute('data-type') == "NodeList"){
-//                         let sChildNodes = sChildNode.childNodes;
-//                         for(const sChildNode of sChildNodes){
-//                             if(sChildNode.getAttribute('data-type') == "NodeListItem"){
-//                                 parseChildNodes(sChildNodes);
-//                             } else if(sChildNode.getAttribute('data-type') == "NodeParagraph"){
-//                                 console.log(window.Lute.BlockDOM2Content(sChildNode.innerHTML));
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-// }
+async function createDoc(notebookId:string,hpath:string,text:string){
+    let response = await fetchSyncPost(
+        "/api/filetree/createDocWithMd",
+        {
+            notebook: notebookId,
+            path: hpath,
+            markdown: text
+        }
+          
+    );
+    return response.data;
+}
