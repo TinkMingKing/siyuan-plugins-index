@@ -1,5 +1,5 @@
 import { fetchSyncPost, showMessage } from 'siyuan';
-import { escapeHtml, i18n, isMobile, log } from './utils';
+import { escapeHtml, i18n, isMobile } from './utils';
 import {  settings } from './settings';
 
 export async function insert() {
@@ -42,10 +42,10 @@ async function getParentDoc(parentId: string) {
             stmt: `SELECT * FROM blocks WHERE id = '${parentId}'`
         }
     );
-    let result = response.data;
+    let result = response.data[0];
     //返回值为数组
-    let box = result[0].box;
-    let path = result[0].path;
+    let box = result.box;
+    let path = result.path;
     return [box, path];
 }
 
