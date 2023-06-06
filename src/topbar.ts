@@ -18,6 +18,15 @@ export async function initTopbar() {
         }
     });
 
+    //添加快捷键
+    plugin.addCommand({
+        langKey: "insertIndex",
+        hotkey: "⌥⌘I",
+        callback: async () => {
+            insert();
+        }
+    });
+
     //创建一个div节点，将设置界面的svelte导入其中
     let settingsTab: SettingsTab;
     let div: HTMLDivElement = document.createElement('div');
