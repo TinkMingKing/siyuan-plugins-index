@@ -1,9 +1,15 @@
 # Index Plugin
 
-Insert a directory of links under the current document block, call out the settings option with a right-click
+Left click on the plugin icon , insert a index list to current document
+
+Right click on the plugin icon, call up the settings panel
+
+`CTRL+ALT+I ` Quick Insert
 
 # Changelog
 
+- Version 1.2.0
+  - Support set List type, Support keyboard shortcut
 - Version 1.1.3
   - Support tab interface settings
 - Version 1.1.1
