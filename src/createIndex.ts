@@ -105,22 +105,26 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
             let subFileCount = doc.subFileCount;
             let path = doc.path;
             for (let n = 1; n < tab; n++) {
-                data += '  ';
+                data += '    ';
             }
-
-            // console.log(Lute.EscapeHTMLStr);
-            // name = new Lute();
-            // console.log(window.Lute.EscapeHTMLStr("123"));
-            // name = window.Lute.EscapeHTMLStr(name);
 
             //转义
             name = escapeHtml(name);
-            
-            if (settings.get("icon")) {
-                data += `* ${getSubdocIcon(icon, subFileCount != 0)}[${name}](siyuan://blocks/${id})\n`;
+
+            //应用设置
+            let listType = settings.get("listType") == "unordered" ? true : false;
+            if(listType){
+                data += "* ";
             } else {
-                data += `* [${name}](siyuan://blocks/${id})\n`;
+                data += "1. ";
             }
+            if (settings.get("icon")) {
+                data += `${getSubdocIcon(icon, subFileCount != 0)} `;
+            }
+
+            //置入数据
+            data += `[${name}](siyuan://blocks/${id})\n`;
+            
 
             if (subFileCount > 0) {//获取下一层级子文档
                 data = await createIndex(notebook, path, data, tab);

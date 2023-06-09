@@ -6,7 +6,8 @@ export const CONFIG = "config";
 //配置文件内容
 const DEFAULT_CONFIG = {
     icon: true,
-    depth: 0
+    depth: 0,
+    listType:"unordered"
 };
 
 class Settings{

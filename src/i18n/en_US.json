@@ -25,6 +25,14 @@
       "icon": {
         "title": "Icon",
         "content":"Set whether to display icons when inserting Index"
+      },
+      "listType": {
+        "title": "Index List Type",
+        "content": "Set the Index List Type",
+        "options": {
+            "unordered": "Unordered List",
+            "ordered": "Ordered List"
+        }
       }
     }
   }

@@ -25,6 +25,14 @@
       "icon": {
         "title": "图标",
         "content":"设置插入目录时是否显示图标"
+      },
+      "listType": {
+        "title": "目录列表类型",
+        "content": "设置目录列表类型",
+        "options": {
+            "unordered": "无序列表",
+            "ordered": "有序列表"
+        }
       }
     }
   }

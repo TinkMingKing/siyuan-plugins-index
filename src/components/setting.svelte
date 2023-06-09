@@ -6,8 +6,10 @@
 
     let sicon = settings.get("icon");
     let sdepth = settings.get("depth");
+    let slistType = settings.get("listType");
     let icon = sicon==undefined ? true : sicon;
     let depth = sdepth==undefined ? 0 : sdepth;
+    let listType = slistType==undefined ? "unordered" : slistType;
 
     onDestroy(() => {
         settings.save();
@@ -15,6 +17,12 @@
 </script>
 
 <div class="config__tab-container">
+    <SettingItem
+        type="select"
+        content={i18n.settingsTab.items.listType}
+        settingKey="listType"
+        settingValue={listType}
+    />
     <SettingItem
         type="switch"
         content={i18n.settingsTab.items.icon}

@@ -8,7 +8,7 @@
     export let settingValue; // 设置项目初始值
 
     function updateSetting() {
-        settings.set(settingKey,settingValue);
+        settings.set(settingKey, settingValue);
         settings.save();
         // console.log("settingKey="+settingKey,"settingValue="+settingValue);
         // eventBus.publish(eventBus.EventSetting, {
@@ -27,7 +27,10 @@
     </div>
     <span class="fn__space" />
     {#if type === "range"}
-        <div class="b3-tooltips b3-tooltips__n fn__flex-center" aria-label={settingValue}>
+        <div
+            class="b3-tooltips b3-tooltips__n fn__flex-center"
+            aria-label={settingValue}
+        >
             <input
                 class="b3-slider fn__size200"
                 id={settingKey}
@@ -47,5 +50,16 @@
             bind:checked={settingValue}
             on:change={updateSetting}
         />
+    {:else if type === "select"}
+        <select
+            class="b3-select fn__flex-center fn__size200"
+            id={settingKey}
+            bind:value={settingValue}
+            on:change={updateSetting}
+        >
+            {#each Object.entries(content.options) as [key, text]}
+                <option value={key}>{text}</option>
+            {/each}
+        </select>
     {/if}
 </label>
