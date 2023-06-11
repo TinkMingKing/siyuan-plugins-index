@@ -123,9 +123,13 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
             }
 
             //置入数据
-            data += `[${name}](siyuan://blocks/${id})\n`;
-            
-
+            let linkType = settings.get("linkType") == "ref" ? true : false;
+            if(linkType){
+                data += `[${name}](siyuan://blocks/${id})\n`;
+            } else {
+                data += `((${id} '${name}'))\n`;
+            }
+            //`((id "锚文本"))`
             if (subFileCount > 0) {//获取下一层级子文档
                 data = await createIndex(notebook, path, data, tab);
             }

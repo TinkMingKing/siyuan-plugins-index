@@ -33,6 +33,14 @@
             "unordered": "Unordered List",
             "ordered": "Ordered List"
         }
+      },
+      "linkType": {
+        "title": "Link Type",
+        "content": "Set the Block Link Type",
+        "options": {
+            "ref": "Ref Block",
+            "embed": "Embed Block "
+        }
       }
     }
   }

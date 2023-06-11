@@ -1,5 +1,4 @@
 import { Plugin } from "siyuan";
-import "./index.scss";
 import { setI18n, log, setPlugin } from "./utils";
 import { initTopbar } from "./topbar";
 import { settings } from "./settings";

@@ -7,7 +7,8 @@ Right click on the plugin icon, call up the settings panel
 `CTRL+ALT+I ` Quick Insert
 
 # Changelog
-
+- Version 1.2.1
+  - Support set Block Link type
 - Version 1.2.0
   - Support set List type, Support keyboard shortcut
 - Version 1.1.3

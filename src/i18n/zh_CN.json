@@ -33,6 +33,14 @@
             "unordered": "无序列表",
             "ordered": "有序列表"
         }
+      },
+      "linkType": {
+        "title": "链接类型",
+        "content": "设置链接类型",
+        "options": {
+            "ref": "块链接",
+            "embed": "块引用"
+        }
       }
     }
   }
