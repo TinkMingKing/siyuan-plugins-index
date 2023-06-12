@@ -1,8 +1,16 @@
 import { fetchSyncPost } from "siyuan";
-import { log } from "./utils";
+import { IndexNode, IndexStack } from "./indexnode";
+import { getParentDoc } from "./createIndex";
+
+let indexStack : IndexStack;
+let sortDocStack : any[];
 
 export function buildDoc({ detail }: any) {
-    log(detail);
+    if (detail.blockElements.length > 1 || 
+        detail.blockElements[0].getAttribute('data-type') != "NodeList") {
+        return;
+    }
+    console.log(detail);
     detail.menu.addItem({
         icon: "iconList",
         label: "目录插件",
@@ -13,36 +21,44 @@ export function buildDoc({ detail }: any) {
 }
 
 async function parseBlockDOM(detail: any) {
-    if (detail.blockElements.length > 1) {
-        return;
-    }
-    let notebookId = detail.protyle.notebookId;
+    indexStack = new IndexStack();
+    sortDocStack = [];
+    indexStack.notebookId = detail.protyle.notebookId;
     let docId = detail.blockElements[0].getAttribute("data-node-id");
     let block = detail.blockElements[0].childNodes;
-    await parseChildNodes(notebookId,docId,block);
+    indexStack.basePath = await getRootDoc(docId);
+    let docData = await getParentDoc(detail.protyle.block.rootID);
+    indexStack.pPath = docData[1].slice(0, -3);
+    // console.log("rootID:"+indexStack.parentId)
+    await parseChildNodes(block,indexStack);
+    await stackPopAll(indexStack);
+    // for (const iterator of sortDocStack) {
+    //     await sleep(2000);
+    //     iterator();
+    // }
+    window.location.reload();
 }
 
-async function parseChildNodes(notebookId:string,hpath:string,childNodes: any) {
+async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
+    tab++;
+    let newItem: IndexStack;
     for (const childNode of childNodes) {
         if (childNode.getAttribute('data-type') == "NodeListItem") {
             // console.log("if NodeListItem:");
             let sChildNodes = childNode.childNodes;
-            let blockId = "";
             for (const sChildNode of sChildNodes) {
                 // console.log("for 2:");
                 if (sChildNode.getAttribute('data-type') == "NodeParagraph") {
                     //获取文档标题
                     let text = window.Lute.BlockDOM2Content(sChildNode.innerHTML);
-                    //获取hpath
-                    let shpath = await getRootDoc(hpath);
                     //创建文档
-                    blockId = await createDoc(notebookId,shpath,text);
-                    let html = `* [${text}](siyuan://blocks/${blockId})`;
-                    console.log(text);
+                    let item = new IndexNode(tab,text);
+                    pitem.push(item);
+                    newItem = item.children;
+                    // await createDoc(notebookId,hpath);
+                    // console.log(tab+":"+text);
                 } else if (sChildNode.getAttribute('data-type') == "NodeList") {
-                    setTimeout(async () => {
-                        await parseChildNodes(notebookId,blockId,sChildNode.childNodes); 
-                    }, 3000);
+                    await parseChildNodes(sChildNode.childNodes,newItem,tab); 
                 }
             }
         }
@@ -61,15 +77,65 @@ async function getRootDoc(id:string){
     return result?.hpath;
 }
 
-async function createDoc(notebookId:string,hpath:string,text:string){
+async function createDoc(notebookId:string,hpath:string){
     let response = await fetchSyncPost(
         "/api/filetree/createDocWithMd",
         {
             notebook: notebookId,
-            path: hpath + "/" + text,
+            path: hpath,
             markdown: ""
         }
           
     );
     return response.data;
+}
+
+async function stackPopAll(stack:IndexStack){
+    let item : IndexNode;
+    let temp = new IndexStack();
+    while(!stack.isEmpty()){
+        item = stack.pop();
+        
+        let subPath = stack.basePath+"/"+item.text;
+
+        //同级目录等待返回，并延迟1s，避免数据库写入延迟的影响，确保不乱序
+        item.path = await createDoc(indexStack.notebookId, subPath);
+
+        item.path = stack.pPath + "/" + item.path
+        
+        temp.push(item);
+        // await sleep(1000);
+        if(!item.children.isEmpty()){
+            item.children.basePath = subPath;
+            item.children.pPath = item.path;
+            await stackPopAll(item.children);
+            // stackPopAll(item.children); //可能更快
+        }
+    }
+    temp.pPath = stack.pPath;
+    // console.log(temp.parentId);
+    // let func = function(){
+    await sortDoc(temp);
+    // }
+    // sortDocStack.push(func);
+    console.log("ok");
+}
+
+async function sortDoc(item : IndexStack){
+    //构建真实顺序
+    let paths = [];
+    while(!item.isEmpty()){
+        paths.push(item.pop().path+".sy");
+    }
+    await requestChangeSort(paths,indexStack.notebookId);
+}
+
+async function requestChangeSort(paths:any[],notebook:string){
+    await fetchSyncPost(
+        "/api/filetree/changeSort",
+        {
+            paths: paths,
+            notebook: notebook
+        }
+    );
 }

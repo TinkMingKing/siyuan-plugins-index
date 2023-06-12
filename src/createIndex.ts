@@ -34,7 +34,7 @@ export async function insert() {
 }
 
 //获取当前文档信息
-async function getParentDoc(parentId: string) {
+export async function getParentDoc(parentId: string) {
 
     let response = await fetchSyncPost(
         "/api/query/sql",
@@ -43,6 +43,7 @@ async function getParentDoc(parentId: string) {
         }
     );
     let result = response.data[0];
+    console.log(response);
     //返回值为数组
     let box = result.box;
     let path = result.path;
@@ -58,7 +59,7 @@ function getDocid() {
 }
 
 //获取子文档数据
-async function requestSubdoc(notebook: any, path: any) {
+export async function requestSubdoc(notebook: any, path: any) {
     let response = await fetchSyncPost(
         "/api/filetree/listDocsByPath",
         {

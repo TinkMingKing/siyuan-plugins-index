@@ -1,5 +1,5 @@
 import { fetchSyncPost, showMessage } from 'siyuan';
-import { escapeHtml, i18n, log } from './utils';
+import { escapeHtml, i18n } from './utils';
 import {  settings } from './settings';
 import { IndexNode } from './indexnode';
 
@@ -158,7 +158,7 @@ function indexJoin(){
             data += node.text;
         }
     }
-    log("data=" + data);
+    console.log("data=" + data);
     return data;
 }
 

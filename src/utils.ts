@@ -1,8 +1,8 @@
 import { getFrontend } from "siyuan";
 import IndexPlugin from ".";
 
-export function log(data: any){
-    console.log(data);
+export function sleep (time:number) {
+    return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 export let i18n: any;

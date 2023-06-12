@@ -1,10 +1,7 @@
 import { fetchSyncPost } from "siyuan";
-import { log } from "./utils";
-
-let baseHpath:any;
 
 export function buildDoc({ detail }: any) {
-    log(detail);
+    console.log(detail);
     detail.menu.addItem({
         icon: "iconList",
         label: "目录插件",
@@ -21,12 +18,10 @@ async function parseBlockDOM(detail: any) {
     let notebookId = detail.protyle.notebookId;
     let docId = detail.blockElements[0].getAttribute("data-node-id");
     let block = detail.blockElements[0].childNodes;
-    let hpath = await getRootDoc(docId);
-    baseHpath = hpath;
-    await parseChildNodes(notebookId,block,hpath);
+    await parseChildNodes(notebookId,docId,block);
 }
 
-async function parseChildNodes(notebookId:string,childNodes: any,hpath:any) {
+async function parseChildNodes(notebookId:string,hpath:string,childNodes: any) {
     for (const childNode of childNodes) {
         if (childNode.getAttribute('data-type') == "NodeListItem") {
             // console.log("if NodeListItem:");
@@ -37,24 +32,20 @@ async function parseChildNodes(notebookId:string,childNodes: any,hpath:any) {
                 if (sChildNode.getAttribute('data-type') == "NodeParagraph") {
                     //获取文档标题
                     let text = window.Lute.BlockDOM2Content(sChildNode.innerHTML);
-                    hpath += "/" + text;
+                    //获取hpath
+                    let shpath = await getRootDoc(hpath);
                     //创建文档
-                    blockId = await createDoc(notebookId,hpath);
+                    blockId = await createDoc(notebookId,shpath,text);
                     let html = `* [${text}](siyuan://blocks/${blockId})`;
                     console.log(text);
                 } else if (sChildNode.getAttribute('data-type') == "NodeList") {
-                    // setTimeout(async () => {
-                        await parseChildNodes(notebookId,sChildNode.childNodes,hpath); 
-                    // }, 3000);
-                    // hpath = baseHpath;
-                    
+                    setTimeout(async () => {
+                        await parseChildNodes(notebookId,blockId,sChildNode.childNodes); 
+                    }, 3000);
                 }
             }
-            // hpath = baseHpath;
         }
-        // hpath = baseHpath;
     }
-    // hpath = baseHpath;
 }
 
 async function getRootDoc(id:string){
@@ -69,12 +60,12 @@ async function getRootDoc(id:string){
     return result?.hpath;
 }
 
-async function createDoc(notebookId:string,hpath:string){
+async function createDoc(notebookId:string,hpath:string,text:string){
     let response = await fetchSyncPost(
         "/api/filetree/createDocWithMd",
         {
             notebook: notebookId,
-            path: hpath,
+            path: hpath + "/" + text,
             markdown: ""
         }
           
