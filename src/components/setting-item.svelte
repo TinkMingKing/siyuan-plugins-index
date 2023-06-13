@@ -1,7 +1,6 @@
 <script>
     import { settings } from "../settings";
 
-    // import { eventBus } from "../event-bus";
     export let type; // 设置项目类型
     export let content; // 设置项目内部文本展示
     export let settingKey; // 设置项目 key
@@ -10,11 +9,6 @@
     function updateSetting() {
         settings.set(settingKey, settingValue);
         settings.save();
-        // console.log("settingKey="+settingKey,"settingValue="+settingValue);
-        // eventBus.publish(eventBus.EventSetting, {
-        //     key: settingKey,
-        //     value: settingValue,
-        // });
     }
 </script>
 

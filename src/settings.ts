@@ -8,6 +8,7 @@ const DEFAULT_CONFIG = {
     icon: true,
     depth: 0,
     listType:"unordered",
+    linkType:"ref",
     docBuilder: false
 };
 
