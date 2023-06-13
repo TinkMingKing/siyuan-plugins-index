@@ -41,6 +41,10 @@
             "ref": "Ref Block",
             "embed": "Embed Block "
         }
+      },
+      "docBuilder": {
+        "title": "Document Builder <span style='color: red;'>[Beta]</span>",
+        "content":"When enabled, when only one block is selected and it is a list block, this button will appear. Clicking this button can construct a document hierarchy based on an unordered list hierarchy<br>Please ensure that there is only a list block in this block to ensure that the document hierarchy is constructed as expected<br>Note: In the same level directory, files with the same name will not be created repeatedly. Do not operate on formed directory blocks to avoid generating a large number of useless documents"
       }
     }
   }

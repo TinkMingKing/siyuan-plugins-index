@@ -7,7 +7,8 @@ export const CONFIG = "config";
 const DEFAULT_CONFIG = {
     icon: true,
     depth: 0,
-    listType:"unordered"
+    listType:"unordered",
+    docBuilder: false
 };
 
 class Settings{

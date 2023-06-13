@@ -1,19 +1,20 @@
 import { fetchSyncPost } from "siyuan";
 import { IndexNode, IndexStack } from "./indexnode";
 import { getParentDoc } from "./createIndex";
+import { settings } from "./settings";
+import { i18n } from "./utils";
 
 let indexStack : IndexStack;
-let sortDocStack : any[];
 
 export function buildDoc({ detail }: any) {
     if (detail.blockElements.length > 1 || 
-        detail.blockElements[0].getAttribute('data-type') != "NodeList") {
+        detail.blockElements[0].getAttribute('data-type') != "NodeList" || !settings.get("docBuilder")) {
         return;
     }
-    console.log(detail);
+    // console.log(detail);
     detail.menu.addItem({
         icon: "iconList",
-        label: "目录插件",
+        label: i18n.settingsTab.items.docBuilder.title,
         click: async () => {
             await parseBlockDOM(detail);
         }
@@ -22,20 +23,14 @@ export function buildDoc({ detail }: any) {
 
 async function parseBlockDOM(detail: any) {
     indexStack = new IndexStack();
-    sortDocStack = [];
     indexStack.notebookId = detail.protyle.notebookId;
     let docId = detail.blockElements[0].getAttribute("data-node-id");
     let block = detail.blockElements[0].childNodes;
     indexStack.basePath = await getRootDoc(docId);
     let docData = await getParentDoc(detail.protyle.block.rootID);
     indexStack.pPath = docData[1].slice(0, -3);
-    // console.log("rootID:"+indexStack.parentId)
     await parseChildNodes(block,indexStack);
     await stackPopAll(indexStack);
-    // for (const iterator of sortDocStack) {
-    //     await sleep(2000);
-    //     iterator();
-    // }
     window.location.reload();
 }
 
@@ -100,11 +95,8 @@ async function stackPopAll(stack:IndexStack){
 
         //同级目录等待返回，并延迟1s，避免数据库写入延迟的影响，确保不乱序
         item.path = await createDoc(indexStack.notebookId, subPath);
-
         item.path = stack.pPath + "/" + item.path
-        
         temp.push(item);
-        // await sleep(1000);
         if(!item.children.isEmpty()){
             item.children.basePath = subPath;
             item.children.pPath = item.path;
@@ -113,11 +105,7 @@ async function stackPopAll(stack:IndexStack){
         }
     }
     temp.pPath = stack.pPath;
-    // console.log(temp.parentId);
-    // let func = function(){
     await sortDoc(temp);
-    // }
-    // sortDocStack.push(func);
     console.log("ok");
 }
 

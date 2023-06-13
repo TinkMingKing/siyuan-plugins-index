@@ -20,7 +20,7 @@
 
 <label class="fn__flex b3-label config__item">
     <div class="fn__flex-1">
-        {content.title}
+        {@html content.title}
         <div class="b3-label__text">
             {@html content.content}
         </div>
