@@ -9,8 +9,8 @@ export default class IndexPlugin extends Plugin {
     async onload() {
         console.log("IndexPlugin onload");
         this.init();
-        await settings.initData();
         await initTopbar();
+        await settings.initData();
         //监听块菜单事件
         this.eventBus.on("click-blockicon", buildDoc);
         
