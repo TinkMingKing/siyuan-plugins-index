@@ -1,6 +1,6 @@
 import { fetchSyncPost } from "siyuan";
 import { IndexNode, IndexStack } from "./indexnode";
-import { getParentDoc } from "./createIndex";
+import { getParentDoc, insertAfter } from "./createIndex";
 import { settings } from "./settings";
 import { i18n } from "./utils";
 
@@ -31,6 +31,7 @@ async function parseBlockDOM(detail: any) {
     indexStack.pPath = docData[1].slice(0, -3);
     await parseChildNodes(block,indexStack);
     await stackPopAll(indexStack);
+    await insertAfter(indexStack.notebookId,docId,docData[1]);
     window.location.reload();
 }
 

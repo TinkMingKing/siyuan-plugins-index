@@ -1,6 +1,6 @@
 import { fetchSyncPost, showMessage } from 'siyuan';
 import { escapeHtml, i18n, isMobile } from './utils';
-import {  settings } from './settings';
+import { settings } from './settings';
 
 export async function insert() {
     //载入配置
@@ -24,7 +24,24 @@ export async function insert() {
     let data = '';
     data = await createIndex(box, path, data);
     if (data != '') {
-        insertData(parentId, data);
+        await insertData(parentId, data);
+    } else
+        showMessage(
+            i18n.errorMsg_miss,
+            3000,
+            "error"
+        );
+}
+
+export async function insertAfter(notebookId:string,parentId:string,path:string) {
+    //载入配置
+    await settings.load();
+
+    //插入目录
+    let data = '';
+    data = await createIndex(notebookId, path, data);
+    if (data != '') {
+        await insertDataAfter(parentId, data);
     } else
         showMessage(
             i18n.errorMsg_miss,
@@ -114,7 +131,7 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
 
             //应用设置
             let listType = settings.get("listType") == "unordered" ? true : false;
-            if(listType){
+            if (listType) {
                 data += "* ";
             } else {
                 data += "1. ";
@@ -125,7 +142,7 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
 
             //置入数据
             let linkType = settings.get("linkType") == "ref" ? true : false;
-            if(linkType){
+            if (linkType) {
                 data += `[${name}](siyuan://blocks/${id})\n`;
             } else {
                 data += `((${id} '${name}'))\n`;
@@ -214,6 +231,31 @@ async function insertData(id: string, data: string) {
 
 
 }
+
+//插入数据
+async function insertDataAfter(id: string, data: string) {
+
+    let result = await fetchSyncPost(
+        "/api/block/updateBlock",
+        {
+            data: data,
+            dataType: "markdown",
+            id: id
+        }
+    );
+    await fetchSyncPost(
+        "/api/attr/setBlockAttrs",
+        {
+            id: result.data[0].doOperations[0].id,
+            attrs: {
+                "custom-index-create": result.data[0].doOperations[0].id
+            }
+        }
+    );
+
+}
+
+
 /**
 
 async function insertData(id: string, data: string) {
