@@ -12,7 +12,7 @@ export default class IndexPlugin extends Plugin {
         await settings.initData();
         await initTopbar();
         //监听块菜单事件
-        this.eventBus.on("click-blockicon", buildDoc);
+        // this.eventBus.on("click-blockicon", buildDoc);
         
     }
 

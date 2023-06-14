@@ -8,6 +8,8 @@ Right click on the plugin icon, call up the settings panel
 
 # Changelog
 - Version 1.2.2
+  - Document builder revoke
+- Version 1.2.2
   - Add a document builder for easy batch creation of documents
 - Version 1.2.1
   - Support set Block Link type
