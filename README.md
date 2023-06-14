@@ -7,7 +7,9 @@ Right click on the plugin icon, call up the settings panel
 `CTRL+ALT+I ` Quick Insert
 
 # Changelog
-- Version 1.2.2
+- Version 1.2.5
+  - Document builder reopened and used with caution
+- Version 1.2.4
   - Document builder revoke
 - Version 1.2.2
   - Add a document builder for easy batch creation of documents
