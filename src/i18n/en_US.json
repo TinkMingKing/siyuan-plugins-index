@@ -13,7 +13,7 @@
   "icon_disable": "icon disable",
   "dclike": "After deleting, please do not click too quickly",
   "settingsTab": {
-    "name":"Settings",
+    "name":"Index Settings",
     "items": {
       "depth": {
         "title": "Index depth",

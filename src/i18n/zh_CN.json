@@ -13,7 +13,7 @@
   "icon_disable": "禁用图标",
   "dclike": "删除后请勿过快点击",
   "settingsTab": {
-    "name":"设置",
+    "name":"目录设置",
     "items": {
       "depth": {
         "title": "目录索引深度",

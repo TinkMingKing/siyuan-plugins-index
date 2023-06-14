@@ -2,6 +2,7 @@ import { openTab } from "siyuan";
 import { insert } from "./createIndex";
 import { i18n, plugin } from "./utils";
 import SettingsTab from "./components/setting.svelte"
+import { settings } from "./settings";
 
 //tab类型
 const TAB_TYPE = "custom_tab";
@@ -26,6 +27,8 @@ export async function initTopbar() {
             insert();
         }
     });
+    //载入配置
+    await settings.load();
 
     //创建一个div节点，将设置界面的svelte导入其中
     let settingsTab: SettingsTab;

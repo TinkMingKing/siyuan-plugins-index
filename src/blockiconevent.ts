@@ -40,19 +40,17 @@ async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
     let newItem: IndexStack;
     for (const childNode of childNodes) {
         if (childNode.getAttribute('data-type') == "NodeListItem") {
-            // console.log("if NodeListItem:");
             let sChildNodes = childNode.childNodes;
             for (const sChildNode of sChildNodes) {
-                // console.log("for 2:");
                 if (sChildNode.getAttribute('data-type') == "NodeParagraph") {
                     //获取文档标题
                     let text = window.Lute.BlockDOM2Content(sChildNode.innerHTML);
+                    //过滤emoji
+                    text = text.replace(/^[\ue04e-\ue50e]+$/gi, "");
                     //创建文档
                     let item = new IndexNode(tab,text);
                     pitem.push(item);
                     newItem = item.children;
-                    // await createDoc(notebookId,hpath);
-                    // console.log(tab+":"+text);
                 } else if (sChildNode.getAttribute('data-type') == "NodeList") {
                     await parseChildNodes(sChildNode.childNodes,newItem,tab); 
                 }

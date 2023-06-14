@@ -1,8 +1,12 @@
 <script>
-    import { onDestroy } from "svelte";
+    import { beforeUpdate, onDestroy } from "svelte";
     import { settings } from "../settings";
     import SettingItem from "./setting-item.svelte";
     import { i18n } from "../utils";
+
+    beforeUpdate(async ()=>{
+        await settings.load();
+    });
 
     let sicon = settings.get("icon");
     let sdepth = settings.get("depth");
