@@ -1,6 +1,6 @@
 import { fetchSyncPost, showMessage } from 'siyuan';
-import { escapeHtml, i18n, isMobile } from './utils';
-import { settings } from './settings';
+import { escapeHtml, i18n, isMobile, plugin, sleep } from './utils';
+import { CONFIG, settings } from './settings';
 
 export async function insert() {
     //载入配置
@@ -33,7 +33,7 @@ export async function insert() {
         );
 }
 
-export async function insertAfter(notebookId:string,parentId:string,path:string) {
+export async function insertAfter(notebookId: string, parentId: string, path: string) {
     //载入配置
     await settings.load();
 
@@ -50,6 +50,50 @@ export async function insertAfter(notebookId:string,parentId:string,path:string)
         );
 }
 
+export async function insertAuto(notebookId: string, path: string,parentId:string) {
+
+    await sleep(1000);
+
+    //载入配置
+    await settings.load();
+
+    let rs = await fetchSyncPost(
+        "/api/query/sql",
+        {
+            stmt: `SELECT * FROM blocks WHERE root_id = '${parentId}' AND ial like '%custom-index-create%' order by updated desc limit 1`
+        }
+    );
+
+    console.log(path);
+
+    if (rs.data[0]?.id != undefined) {
+        let ial = await fetchSyncPost(
+            "/api/attr/getBlockAttrs",
+            {
+                id: rs.data[0].id
+            }
+        );
+        //载入配置
+        let str = ial.data["custom-index-create"];
+        console.log(str);
+        settings.loadSettings(JSON.parse(str));
+        //插入目录
+        let data = '';
+        data = await createIndex(notebookId, path, data);
+        console.log(plugin.data)
+        console.log("data="+data)
+        if (data != '') {
+            await insertDataAfter(rs.data[0].id, data);
+        } else
+            showMessage(
+                i18n.errorMsg_miss,
+                3000,
+                "error"
+            );
+    }
+
+}
+
 //获取当前文档信息
 export async function getParentDoc(parentId: string) {
 
@@ -60,7 +104,7 @@ export async function getParentDoc(parentId: string) {
         }
     );
     let result = response.data[0];
-    console.log(response);
+    // console.log(response);
     //返回值为数组
     let box = result.box;
     let path = result.path;
@@ -182,7 +226,8 @@ async function insertData(id: string, data: string) {
                 {
                     id: result.data[0].doOperations[0].id,
                     attrs: {
-                        "custom-index-create": result.data[0].doOperations[0].id
+                        // "custom-index-create": result.data[0].doOperations[0].id
+                        "custom-index-create": JSON.stringify(plugin.data[CONFIG])
                     }
                 }
             );
@@ -205,7 +250,7 @@ async function insertData(id: string, data: string) {
                 {
                     id: result.data[0].doOperations[0].id,
                     attrs: {
-                        "custom-index-create": result.data[0].doOperations[0].id
+                        "custom-index-create": JSON.stringify(plugin.data[CONFIG])
                     }
                 }
             );
@@ -248,13 +293,12 @@ async function insertDataAfter(id: string, data: string) {
         {
             id: result.data[0].doOperations[0].id,
             attrs: {
-                "custom-index-create": result.data[0].doOperations[0].id
+                "custom-index-create": JSON.stringify(plugin.data[CONFIG])
             }
         }
     );
 
 }
-
 
 /**
 

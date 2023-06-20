@@ -42,6 +42,13 @@ class Settings{
         await plugin.saveData(CONFIG, plugin.data[CONFIG]);
     }
 
+    loadSettings(data: any){
+        this.set("icon",data.icon);
+        this.set("depth",data.depth);
+        this.set("listType",data.listType);
+        this.set("linkType",data.linkType);
+    }
+
 }
 
 export const settings: Settings = new Settings();
