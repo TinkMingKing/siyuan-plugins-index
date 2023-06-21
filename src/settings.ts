@@ -9,7 +9,8 @@ const DEFAULT_CONFIG = {
     depth: 0,
     listType:"unordered",
     linkType:"ref",
-    docBuilder: false
+    docBuilder: false,
+    autoUpdate: true
 };
 
 class Settings{
@@ -40,6 +41,13 @@ class Settings{
 
     async save(){
         await plugin.saveData(CONFIG, plugin.data[CONFIG]);
+    }
+
+    loadSettings(data: any){
+        this.set("icon",data.icon);
+        this.set("depth",data.depth);
+        this.set("listType",data.listType);
+        this.set("linkType",data.linkType);
     }
 
 }

@@ -21,7 +21,7 @@ export async function initTopbar() {
 
     //添加快捷键
     plugin.addCommand({
-        langKey: "insertIndex",
+        langKey: "addTopBarIcon",
         hotkey: "⌥⌘I",
         callback: async () => {
             insert();
