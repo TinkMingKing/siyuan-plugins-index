@@ -1,5 +1,5 @@
 import { fetchSyncPost, showMessage } from 'siyuan';
-import { escapeHtml, i18n, isMobile, plugin, sleep } from './utils';
+import { escapeHtml, i18n, isMobile, plugin } from './utils';
 import { CONFIG, settings } from './settings';
 
 export async function insert() {
@@ -51,8 +51,6 @@ export async function insertAfter(notebookId: string, parentId: string, path: st
 }
 
 export async function insertAuto(notebookId: string, path: string,parentId:string) {
-
-    await sleep(1000);
 
     //载入配置
     await settings.load();
