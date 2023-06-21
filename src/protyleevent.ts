@@ -1,7 +1,8 @@
 import { insertAuto } from "./createIndex";
+import { settings } from "./settings";
 
 export function updateIndex({ detail }: any) {
-    if (detail.options.mode != undefined) {
+    if (detail.options.mode != undefined || !settings.get("autoUpdate")) {
         console.log(detail);
         console.log("open");
         return;

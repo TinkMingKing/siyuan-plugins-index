@@ -9,7 +9,8 @@ const DEFAULT_CONFIG = {
     depth: 0,
     listType:"unordered",
     linkType:"ref",
-    docBuilder: false
+    docBuilder: false,
+    autoUpdate: true
 };
 
 class Settings{

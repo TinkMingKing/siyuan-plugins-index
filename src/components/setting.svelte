@@ -4,7 +4,7 @@
     import SettingItem from "./setting-item.svelte";
     import { i18n } from "../utils";
 
-    beforeUpdate(async ()=>{
+    beforeUpdate(async () => {
         await settings.load();
     });
 
@@ -13,11 +13,13 @@
     let slistType = settings.get("listType");
     let slinkType = settings.get("linkType");
     let sdocBuilder = settings.get("docBuilder");
-    let icon = sicon==undefined ? true : sicon;
-    let depth = sdepth==undefined ? 0 : sdepth;
-    let listType = slistType==undefined ? "unordered" : slistType;
-    let linkType = slinkType==undefined ? "ref" : slinkType;
-    let docBuilder = sdocBuilder==undefined ? false : sdocBuilder;
+    let sautoUpdate = settings.get("autoUpdate");
+    let icon = sicon == undefined ? true : sicon;
+    let autoUpdate = sicon == undefined ? true : sautoUpdate;
+    let depth = sdepth == undefined ? 0 : sdepth;
+    let listType = slistType == undefined ? "unordered" : slistType;
+    let linkType = slinkType == undefined ? "ref" : slinkType;
+    let docBuilder = sdocBuilder == undefined ? false : sdocBuilder;
 
     onDestroy(() => {
         settings.save();
@@ -42,6 +44,12 @@
         content={i18n.settingsTab.items.icon}
         settingKey="icon"
         settingValue={icon}
+    />
+    <SettingItem
+        type="switch"
+        content={i18n.settingsTab.items.autoUpdate}
+        settingKey="autoUpdate"
+        settingValue={autoUpdate}
     />
     <SettingItem
         type="range"
