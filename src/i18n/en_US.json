@@ -26,6 +26,10 @@
         "title": "Icon",
         "content":"Set whether to display icons when inserting Index"
       },
+      "autoUpdate": {
+        "title": "Auto update",
+        "content":"After opening, the inserted directory will be automatically updated when the document is opened<br><span style='color: blue;'>Note: The automatic update rule is the setting for this insertion, and manual insertion can only change the automatic insertion rule</span>"
+      },
       "listType": {
         "title": "Index List Type",
         "content": "Set the Index List Type",

@@ -1,6 +1,6 @@
 import { Plugin } from "siyuan";
 import { setI18n, setPlugin } from "./utils";
-import { initTopbar } from "./topbar";
+import { createDialog, initTopbar } from "./topbar";
 import { settings } from "./settings";
 import { buildDoc } from "./blockiconevent";
 import { updateIndex } from "./protyleevent";
@@ -21,6 +21,10 @@ export default class IndexPlugin extends Plugin {
     onunload() {
         console.log("IndexPlugin onunload");
     }
+
+    // async openSetting(){
+    //     await createDialog();
+    // }
 
     init(){
         setI18n(this.i18n);
