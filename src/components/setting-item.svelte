@@ -5,6 +5,8 @@
     export let content; // 设置项目内部文本展示
     export let settingKey; // 设置项目 key
     export let settingValue; // 设置项目初始值
+    export let onMyClick = function(){}; //点击事件
+    export let disabled = null;
 
     function updateSetting() {
         settings.set(settingKey, settingValue);
@@ -55,5 +57,15 @@
                 <option value={key}>{text}</option>
             {/each}
         </select>
+    {:else if type === "button"}
+        <button
+            class="b3-button b3-button--outline fn__size200 fn__flex-center"
+            id={settingKey}
+            on:click={onMyClick}
+            {disabled}
+        >
+            <svg><use xlink:href="{content.icon}" /></svg>
+            {content.text}
+        </button>
     {/if}
 </label>
