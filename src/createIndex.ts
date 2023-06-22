@@ -269,17 +269,18 @@ function insertOutline(data: string, outlineData: any[], tab: number) {
     tab++;
 
     //生成写入文本
-    for (const element of outlineData) {
-        let id = element.id;
+    console.log("outlineData.length:"+outlineData.length )
+    for (let outline of outlineData) {
+        let id = outline.id;
         let name = "";
-        if (element.depth == 0) {
-            name = element.name;
+        if (outline.depth == 0) {
+            name = outline.name;
         } else {
-            name = element.content;
+            name = outline.content;
         }
 
         // let icon = doc.icon;
-        let subOutlineCount = element.count;
+        let subOutlineCount = outline.count;
         for (let n = 1; n < tab; n++) {
             data += '    ';
         }
@@ -307,7 +308,11 @@ function insertOutline(data: string, outlineData: any[], tab: number) {
         }
         //`((id "锚文本"))`
         if (subOutlineCount > 0) {//获取下一层级子文档
-            data = insertOutline(data, element.blocks, tab);
+            if(outline.depth == 0){
+                data = insertOutline(data, outline.blocks, tab);
+            } else {
+                data = insertOutline(data, outline.children, tab);
+            }
         }
 
     }
