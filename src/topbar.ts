@@ -1,5 +1,5 @@
-import { Dialog, openTab } from "siyuan";
-import { insert } from "./createIndex";
+import { Dialog, fetchSyncPost, openTab } from "siyuan";
+import { insert, insertButton, insertDocButton } from "./createIndex";
 import { i18n, isMobile, plugin } from "./utils";
 import SettingsTab from "./components/setting-dialog.svelte"
 import { settings } from "./settings";
@@ -113,8 +113,13 @@ export async function createDialog() {
     });
     let settingsTab: SettingsTab;
     let div: HTMLDivElement = dialog.element.querySelector(`#${settingsDialog}`);
+
     settingsTab = new SettingsTab({
         target: div,
+        props:{
+            onSubOutlineButton:()=>{insertButton(dialog)},
+            onDocOutlineButton:()=>{insertDocButton(dialog)}
+        }
     });
 }
 

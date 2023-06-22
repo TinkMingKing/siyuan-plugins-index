@@ -12,6 +12,9 @@
   "icon_enable": "启用图标",
   "icon_disable": "禁用图标",
   "dclike": "删除后请勿过快点击",
+  "noneId":"<span style='color: red;'>未获取到文档id，按钮被禁用，你需要先打开一个文档，或者是在需要插入的文档中点击一下</span>",
+  "hadId":"<span style='color: green;'>已获取到文档id，可以点击按钮</span>",
+  "errorMsg_miss_outline":"当前文档下无大纲",
   "settingsTab": {
     "name":"目录设置",
     "items": {
@@ -49,6 +52,18 @@
       "docBuilder": {
         "title": "文档构建器 <span style='color: red;'>[测试功能]</span>",
         "content":"启用后，当 <span style='color: orange;'>只选中一个块，且该块为列表块</span> 时，将出现该按钮<br><span style='color: blue;'>点击该按钮，能够根据无序列表层级来构建文档层级</span><br>请保证该块中 <span style='color: orange;'>只有列表块</span> ，以确保文档层次结构能够按预期的效果被构建<br>注：同级目录下，同名文件不会被重复创建，不要对已经成型的目录块进行操作，以免生成大量无用文档<br><span style='color: red;font-size: 16px;'>此功能在绝大多数情况下能够正常工作，但仍可能在极少数情况下产生无法预知的错误，因此使用前请务必先创建快照</span>"
+      },
+      "subOutlineButton": {
+        "title": "插入子文档目录及大纲",
+        "content":"插入子文档目录的同时插入文档大纲，<span style='color: red;'>并为该文档禁用自动更新</span>，因为大纲检索缓慢，所以有大纲时不支持自动更新，如果长时间没有显示插入成功，请耐心等待",
+        "text":"插入",
+        "icon":"#iconAlignCenter"
+      },
+      "docOutlineButton": {
+        "title": "插入当前文档大纲",
+        "content":"只会插入当前文档大纲，只受前两个设置项影响，且能够重复插入，不会更新块，通常在导出文档时可能用到它",
+        "text":"插入",
+        "icon":"#iconAlignCenter"
       }
     }
   }

@@ -3,10 +3,25 @@
     import { settings } from "../settings";
     import SettingItem from "./setting-item.svelte";
     import { i18n } from "../utils";
+    import { getDocid } from "../createIndex";
 
     beforeUpdate(async () => {
         await settings.load();
     });
+
+    export let onSubOutlineButton = function () {};
+    export let onDocOutlineButton = function () {};
+
+    let outlineLable;
+
+    let parentId = getDocid();
+    let disabled = null;
+    if (parentId == null) {
+        disabled = "disabled";
+        outlineLable = i18n.noneId;
+    } else {
+        outlineLable = i18n.hadId;
+    }
 
     let sicon = settings.get("icon");
     let sdepth = settings.get("depth");
@@ -63,6 +78,27 @@
             content={i18n.settingsTab.items.docBuilder}
             settingKey="docBuilder"
             settingValue={docBuilder}
+        />
+        <div class="b3-label">
+            <div class="b3-label b3-label--inner">
+                {@html outlineLable}
+            </div>
+        </div>
+        <SettingItem
+            type="button"
+            content={i18n.settingsTab.items.subOutlineButton}
+            settingKey="subOutlineButton"
+            settingValue=""
+            onMyClick={onSubOutlineButton}
+            {disabled}
+        />
+        <SettingItem
+            type="button"
+            content={i18n.settingsTab.items.docOutlineButton}
+            settingKey="docOutlineButton"
+            settingValue=""
+            onMyClick={onDocOutlineButton}
+            {disabled}
         />
     </div>
 </div>
