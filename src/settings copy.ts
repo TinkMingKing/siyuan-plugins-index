@@ -16,6 +16,8 @@ const DEFAULT_CONFIG = {
 
 class Settings{
 
+    config = DEFAULT_CONFIG;
+
     //初始化配置文件
     async initData() {
         //载入配置
@@ -45,12 +47,16 @@ class Settings{
     }
 
     loadSettings(data: any){
-        this.set("icon",data.icon);
-        this.set("depth",data.depth);
-        this.set("listType",data.listType);
-        this.set("linkType",data.linkType);
+        this.config.icon = data.icon;
+        this.config.depth = data.depth;
+        this.config.listType = data.listType;
+        this.config.linkType = data.linkType;
+        this.config.autoUpdate = data.autoUpdate;
+        this.config.col = data.col;
     }
 
 }
 
 export const settings: Settings = new Settings();
+
+//todo 设置项隔离

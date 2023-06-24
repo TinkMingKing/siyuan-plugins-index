@@ -25,6 +25,13 @@
         "min":0,
         "step":1
       },
+      "col": {
+        "title": "Index Column",
+        "content":"Set the index column",
+        "max":5,
+        "min":1,
+        "step":1
+      },
       "icon": {
         "title": "Icon",
         "content":"Set whether to display icons when inserting Index"

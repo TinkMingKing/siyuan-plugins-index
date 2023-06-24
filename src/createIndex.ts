@@ -1,9 +1,12 @@
 import { Dialog, fetchSyncPost, showMessage } from 'siyuan';
 import { escapeHtml, i18n, isMobile, plugin } from './utils';
 import { CONFIG, settings } from './settings';
+import { IndexQueue, IndexQueueNode } from './indexnode';
+
+let indexQueue: IndexQueue;
 
 /**
- * 插入目录
+ * 点击topbar按钮插入目录
  * @returns void
  */
 export async function insert() {
@@ -26,7 +29,10 @@ export async function insert() {
 
     //插入目录
     let data = '';
-    data = await createIndex(box, path, data);
+    indexQueue = new IndexQueue();
+    await createIndex(box, path, indexQueue);
+    data = queuePopAll(indexQueue, data);
+    console.log(data);
     if (data != '') {
         await insertData(parentId, data);
     } else
@@ -38,14 +44,14 @@ export async function insert() {
 }
 
 /**
- * 插入目录
+ * 点击插入带大纲的目录
  * @returns void
  */
-export async function insertButton(dialog:Dialog) {
+export async function insertButton(dialog: Dialog) {
     //载入配置
     await settings.load();
 
-    settings.set("autoUpdate",false);
+    settings.set("autoUpdate", false);
 
     //寻找当前编辑的文档的id
     let parentId = getDocid();
@@ -63,9 +69,11 @@ export async function insertButton(dialog:Dialog) {
 
     //插入目录
     let data = '';
-    data = await createIndexandOutline(box, path, data);
+    indexQueue = new IndexQueue();
+    await createIndexandOutline(box, path, indexQueue);
+    data = queuePopAll(indexQueue, data);
     if (data != '') {
-        await insertData(parentId, data);
+        await insertDataSimple(parentId, data);
     } else {
         showMessage(
             i18n.errorMsg_miss,
@@ -78,10 +86,10 @@ export async function insertButton(dialog:Dialog) {
 }
 
 /**
- * 插入目录
+ * 点击插入大纲
  * @returns void
  */
-export async function insertDocButton(dialog:Dialog) {
+export async function insertDocButton(dialog: Dialog) {
     //载入配置
     await settings.load();
 
@@ -125,7 +133,7 @@ export async function insertDocButton(dialog:Dialog) {
         );
         return;
     }
-        
+
     dialog.destroy();
 }
 
@@ -141,7 +149,9 @@ export async function insertAfter(notebookId: string, parentId: string, path: st
 
     //插入目录
     let data = '';
-    data = await createIndex(notebookId, path, data);
+    indexQueue = new IndexQueue();
+    await createIndex(notebookId, path, indexQueue);
+    data = queuePopAll(indexQueue, data);
     if (data != '') {
         await insertDataAfter(parentId, data);
     } else
@@ -152,6 +162,12 @@ export async function insertAfter(notebookId: string, parentId: string, path: st
         );
 }
 
+/**
+ * 自动更新目录
+ * @param notebookId 笔记本id 
+ * @param path 目标文档路径
+ * @param parentId 目标文档id
+ */
 export async function insertAuto(notebookId: string, path: string, parentId: string) {
 
     //载入配置
@@ -179,7 +195,9 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
         settings.loadSettings(JSON.parse(str));
         //插入目录
         let data = '';
-        data = await createIndex(notebookId, path, data);
+        indexQueue = new IndexQueue();
+        await createIndex(notebookId, path, indexQueue);
+        data = queuePopAll(indexQueue, data);
         console.log(plugin.data)
         console.log("data=" + data)
         if (data != '') {
@@ -263,13 +281,11 @@ async function requestGetDocOutline(blockId: string) {
 }
 
 function insertOutline(data: string, outlineData: any[], tab: number) {
-    // if (settings.get("depth") == 0 || settings.get("depth") > tab) {
 
-    //     let docs = await requestSubdoc(notebook, ppath);
     tab++;
 
     //生成写入文本
-    console.log("outlineData.length:"+outlineData.length )
+    console.log("outlineData.length:" + outlineData.length)
     for (let outline of outlineData) {
         let id = outline.id;
         let name = "";
@@ -295,9 +311,6 @@ function insertOutline(data: string, outlineData: any[], tab: number) {
         } else {
             data += "1. ";
         }
-        // if (settings.get("icon")) {
-        //     data += `${getSubdocIcon(icon, subFileCount != 0)} `;
-        // }
 
         //置入数据
         let linkType = settings.get("linkType") == "ref" ? true : false;
@@ -308,7 +321,7 @@ function insertOutline(data: string, outlineData: any[], tab: number) {
         }
         //`((id "锚文本"))`
         if (subOutlineCount > 0) {//获取下一层级子文档
-            if(outline.depth == 0){
+            if (outline.depth == 0) {
                 data = insertOutline(data, outline.blocks, tab);
             } else {
                 data = insertOutline(data, outline.children, tab);
@@ -339,7 +352,7 @@ function getSubdocIcon(icon: string, hasChild: boolean) {
 }
 
 //创建目录
-async function createIndexandOutline(notebook: any, ppath: any, data: string, tab = 0) {
+async function createIndexandOutline(notebook: any, ppath: any, pitem: IndexQueue, tab = 0) {
 
     if (settings.get("depth") == 0 || settings.get("depth") > tab) {
 
@@ -349,6 +362,7 @@ async function createIndexandOutline(notebook: any, ppath: any, data: string, ta
         //生成写入文本
         for (let doc of docs) {
 
+            let data = "";
             let id = doc.id;
             let name = doc.name.slice(0, -3);
             let icon = doc.icon;
@@ -382,19 +396,29 @@ async function createIndexandOutline(notebook: any, ppath: any, data: string, ta
             let outlineData = await requestGetDocOutline(id);
             console.log(outlineData);
             data = insertOutline(data, outlineData, tab);
+
+            console.log(data);
+            let item = new IndexQueueNode(tab, data);
+            pitem.push(item);
             //`((id "锚文本"))`
             if (subFileCount > 0) {//获取下一层级子文档
-                data = await createIndex(notebook, path, data, tab);
+                await createIndex(notebook, path, item.children, tab);
             }
 
         }
     }
 
-    return data;
 }
 
-//创建目录
-async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
+/**
+ * 创建目录
+ * @param notebook 笔记本id
+ * @param ppath 父文档路径
+ * @param data 数据
+ * @param tab 深度
+ * @returns 待插入数据
+ */
+async function createIndex(notebook: any, ppath: any, pitem: IndexQueue, tab = 0) {
 
     if (settings.get("depth") == 0 || settings.get("depth") > tab) {
 
@@ -404,6 +428,7 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
         //生成写入文本
         for (let doc of docs) {
 
+            let data = "";
             let id = doc.id;
             let name = doc.name.slice(0, -3);
             let icon = doc.icon;
@@ -434,15 +459,15 @@ async function createIndex(notebook: any, ppath: any, data: string, tab = 0) {
             } else {
                 data += `((${id} '${name}'))\n`;
             }
-            //`((id "锚文本"))`
+            console.log(data);
+            let item = new IndexQueueNode(tab, data);
+            pitem.push(item);
             if (subFileCount > 0) {//获取下一层级子文档
-                data = await createIndex(notebook, path, data, tab);
+                await createIndex(notebook, path, item.children, tab);
             }
 
         }
     }
-
-    return data;
 }
 
 //插入数据
@@ -469,7 +494,6 @@ async function insertData(id: string, data: string) {
                 {
                     id: result.data[0].doOperations[0].id,
                     attrs: {
-                        // "custom-index-create": result.data[0].doOperations[0].id
                         "custom-index-create": JSON.stringify(plugin.data[CONFIG])
                     }
                 }
@@ -503,12 +527,6 @@ async function insertData(id: string, data: string) {
                 "info"
             );
         }
-
-        // showMessage(
-        //     i18n.msg_success,
-        //     3000,
-        //     "info"
-        // );
     } catch (error) {
         showMessage(
             i18n.dclike,
@@ -517,6 +535,25 @@ async function insertData(id: string, data: string) {
         );
     }
 
+
+}
+
+//插入数据
+async function insertDataSimple(id: string, data: string) {
+
+    await fetchSyncPost(
+        "/api/block/insertBlock",
+        {
+            data: data,
+            dataType: "markdown",
+            parentID: id
+        }
+    );
+    showMessage(
+        i18n.msg_success,
+        3000,
+        "info"
+    );
 
 }
 
@@ -543,84 +580,39 @@ async function insertDataAfter(id: string, data: string) {
 
 }
 
-/**
+function queuePopAll(queue: IndexQueue, data: string) {
 
-async function insertData(id: string, data: string) {
+    let item: IndexQueueNode;
 
-    let rs = await fetchSyncPost(
-        "/api/attr/getBlockAttrs",
-        {
-            id: id
-        }
-    );
-    log(rs.data["custom-index-create"]);
-    if (rs.data["custom-index-create"] == undefined) {
-        let result = await fetchSyncPost(
-            "/api/block/insertBlock",
-            {
-                data: data,
-                dataType: "markdown",
-                parentID: id
-            }
-        );
-        await fetchSyncPost(
-            "/api/attr/setBlockAttrs",
-            {
-                id: id,
-                attrs: {
-                    "custom-index-create": result.data[0].doOperations[0].id
-                }
-            }
-        );
-    } else {
-        // try {
-            let result = await fetchSyncPost(
-                "/api/block/updateBlock",
-                {
-                    data: data,
-                    dataType: "markdown",
-                    id: rs.data["custom-index-create"]
-                }
-            );
-            log(result.data?.[0].doOperations[0].id);
-            if(result.data?.[0].doOperations[0].id != undefined){
-                await fetchSyncPost(
-                    "/api/attr/setBlockAttrs",
-                    {
-                        id: id,
-                        attrs: {
-                            "custom-index-create": result.data[0].doOperations[0].id
-                        }
-                    }
-                );
-            } else {
-                let result = await fetchSyncPost(
-                    "/api/block/insertBlock",
-                    {
-                        data: data,
-                        dataType: "markdown",
-                        parentID: id
-                    }
-                );
-                await fetchSyncPost(
-                    "/api/attr/setBlockAttrs",
-                    {
-                        id: id,
-                        attrs: {
-                            "custom-index-create": result.data[0].doOperations[0].id
-                        }
-                    }
-                );
-            }
-            
-        // } catch (error) {
-        //     if(error.name == "TypeError"){
-        //         log("TypeError");
-        //     }
-        // }
+    let num = 0;
+    let temp = 0;
+    let times = 0;
+    let depth = queue.getFront().depth;
+    if (depth == 1 && settings.get("col") != 1) {
+        data += "{{{col\n";
+        temp = Math.trunc(queue.getSize() / settings.get("col"));
+        times = settings.get("col") - 1;
     }
 
+    while (!queue.isEmpty()) {
+        num++;
+        item = queue.pop();
+        data += item.text;
+        console.log(item.text);
 
+
+
+        if (!item.children.isEmpty()) {
+            data = queuePopAll(item.children, data);
+        }
+        if (item.depth == 1 && num == temp && times > 0) {
+            data += `\n{: id}\n`;
+            num = 0;
+            times--;
+        }
+    }
+    if (depth == 1 && settings.get("col") != 1) {
+        data += "}}}";
+    }
+    return data;
 }
-
- */

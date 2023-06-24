@@ -1,28 +1,36 @@
 import { getFrontend } from "siyuan";
 import IndexPlugin from ".";
 
+/**
+ * 延迟函数
+ * @param time 时间
+ * @returns 返回后需await
+ */
 export function sleep (time:number) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+//i18n全局实例
 export let i18n: any;
 export function setI18n(_i18n: any) {
     i18n = _i18n;
 }
 
+//插件全局对象
 export let plugin: IndexPlugin;
 export function setPlugin(_plugin: any) {
     plugin = _plugin;
 }
 
-// export const escapeHtml = (unsafe) => {
-//     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-// }
-
-export const escapeHtml = (unsafe:any) => {
+/**
+ * 替换字符串中的`[]`字符
+ * @param unsafe 待处理字符串
+ * @returns 处理后的字符串
+ */
+export function escapeHtml(unsafe:any){
     return unsafe.replaceAll('[', '\\[').replaceAll(']', '\\]');
 }
 
-
+//运行环境检测
 const frontEnd = getFrontend();
 export const isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile";

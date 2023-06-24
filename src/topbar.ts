@@ -1,11 +1,14 @@
-import { Dialog, fetchSyncPost, openTab } from "siyuan";
+import { Dialog,
+        //  fetchSyncPost,
+        //  openTab
+} from "siyuan";
 import { insert, insertButton, insertDocButton } from "./createIndex";
-import { i18n, isMobile, plugin } from "./utils";
-import SettingsTab from "./components/setting-dialog.svelte"
+import { i18n, plugin } from "./utils";
+import SettingsTab from "./components/setting.svelte"
 import { settings } from "./settings";
 
-//tab类型
-const TAB_TYPE = "custom_tab";
+// //tab类型
+// const TAB_TYPE = "custom_tab";
 
 export async function initTopbar() {
 
@@ -27,7 +30,13 @@ export async function initTopbar() {
             insert();
         }
     });
-    // //载入配置
+
+    //设置右键监听
+    topBarElement.addEventListener("contextmenu", async () => {
+        await createDialog();
+    });
+
+        // //载入配置
     // await settings.load();
 
     // //创建一个div节点，将设置界面的svelte导入其中
@@ -66,37 +75,6 @@ export async function initTopbar() {
     //     })
     // });
 
-    //设置右键监听
-    topBarElement.addEventListener("contextmenu", async () => {
-
-        await createDialog();
-
-        // //载入配置
-        // await settings.load();
-
-        // const settingsDialog = "index-settings"
-
-        // const dialog = new Dialog({
-        //     title: i18n.settingsTab.name,
-        //     //   content: `<div id="${importFormId}"></div>`,
-        //     content: `<div id="${settingsDialog}">`,
-        //     width: isMobile ? "92vw" : "720px"
-        // });
-        // let settingsTab: SettingsTab;
-        // let div: HTMLDivElement = dialog.element.querySelector(`#${settingsDialog}`);
-        // settingsTab = new SettingsTab({
-        //     target: div,
-        // });
-        // new ImportForm({
-        //   target: document.getElementById(importFormId) as HTMLElement,
-        //   props: {
-        //     pluginInstance: pluginInstance,
-        //     dialog: d,
-        //   },
-        // })
-    });
-
-
 }
 
 export async function createDialog() {
@@ -107,9 +85,9 @@ export async function createDialog() {
 
     const dialog = new Dialog({
         title: i18n.settingsTab.name,
-        //   content: `<div id="${importFormId}"></div>`,
         content: `<div id="${settingsDialog}">`,
-        width: isMobile ? "92vw" : "720px"
+        width:"80%",
+        height: "80%",
     });
     let settingsTab: SettingsTab;
     let div: HTMLDivElement = dialog.element.querySelector(`#${settingsDialog}`);
@@ -122,56 +100,3 @@ export async function createDialog() {
         }
     });
 }
-
-
-// topBarElement.addEventListener("click", async () => {
-//     const frontEnd = getFrontend()
-//     const isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile"
-//     const importFormId = "siyuan-import-form"
-//     const d = new Dialog({
-//       title: `${pluginInstance.i18n.selectFile} - ${pluginInstance.i18n.importer}`,
-//       content: `<div id="${importFormId}"></div>`,
-//       width: isMobile ? "92vw" : "720px",
-//     })
-//     new ImportForm({
-//       target: document.getElementById(importFormId) as HTMLElement,
-//       props: {
-//         pluginInstance: pluginInstance,
-//         dialog: d,
-//       },
-//     })
-//   });
-
-// async function addMenu(rect: DOMRect) {
-//     await plugin.loadData(MENU_CONFIG);
-
-//     const menu = new Menu("indexTopbar", async () => {
-//         await plugin.saveData(MENU_CONFIG, plugin.data[MENU_CONFIG]);
-//     });
-
-//     menu.addItem({
-//         icon: "iconSettings",
-//         label: i18n.settings,
-//         type: "readonly",
-//     });
-
-//     menu.addSeparator();
-
-//     menu.addItem({
-//         icon: plugin.data[MENU_CONFIG].icon ? "iconClose" : "iconSelect",
-//         label: plugin.data[MENU_CONFIG].icon ? i18n.icon_disable : i18n.icon_enable,
-//         click: () => {
-//             plugin.data[MENU_CONFIG].icon = !plugin.data[MENU_CONFIG].icon;
-//         }
-//     });
-
-//     if (isMobile()) {
-//         menu.fullscreen();
-//     } else {
-//         menu.open({
-//             x: rect.right,
-//             y: rect.bottom,
-//             isLeft: true,
-//         });
-//     }
-// }

@@ -7,6 +7,8 @@ Right click on the plugin icon, call up the settings panel
 `CTRL+ALT+I ` Quick Insert
 
 # Changelog
+- Version 1.2.9
+  - Support set column
 - Version 1.2.8
   - Support insert outline
 - Version 1.2.6
