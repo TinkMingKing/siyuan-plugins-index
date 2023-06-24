@@ -1,5 +1,5 @@
 import { fetchSyncPost } from "siyuan";
-import { IndexNode, IndexStack } from "./indexnode";
+import { IndexStackNode, IndexStack } from "./indexnode";
 import { getParentDoc, insertAfter } from "./createIndex";
 import { settings } from "./settings";
 import { i18n } from "./utils";
@@ -7,11 +7,13 @@ import { i18n } from "./utils";
 let indexStack : IndexStack;
 
 export function buildDoc({ detail }: any) {
+    //如果选中块大于1或不是列表块或未开启按钮，则直接结束
     if (detail.blockElements.length > 1 || 
-        detail.blockElements[0].getAttribute('data-type') != "NodeList" || !settings.get("docBuilder")) {
+        detail.blockElements[0].getAttribute('data-type') != "NodeList" ||
+        !settings.get("docBuilder")) {
         return;
     }
-    // console.log(detail);
+    //插入按钮到块菜单
     detail.menu.addItem({
         icon: "iconList",
         label: i18n.settingsTab.items.docBuilder.title,
@@ -21,6 +23,10 @@ export function buildDoc({ detail }: any) {
     });
 }
 
+/**
+ * 解析detail中块的DOM
+ * @param detail 
+ */
 async function parseBlockDOM(detail: any) {
     indexStack = new IndexStack();
     indexStack.notebookId = detail.protyle.notebookId;
@@ -45,10 +51,8 @@ async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
                 if (sChildNode.getAttribute('data-type') == "NodeParagraph") {
                     //获取文档标题
                     let text = window.Lute.BlockDOM2Content(sChildNode.innerHTML);
-                    //过滤emoji
-                    text = text.replace(/^[\ue04e-\ue50e]+$/gi, "");
                     //创建文档
-                    let item = new IndexNode(tab,text);
+                    let item = new IndexStackNode(tab,text);
                     pitem.push(item);
                     newItem = item.children;
                 } else if (sChildNode.getAttribute('data-type') == "NodeList") {
@@ -85,14 +89,13 @@ async function createDoc(notebookId:string,hpath:string){
 }
 
 async function stackPopAll(stack:IndexStack){
-    let item : IndexNode;
+    let item : IndexStackNode;
     let temp = new IndexStack();
     while(!stack.isEmpty()){
         item = stack.pop();
         
         let subPath = stack.basePath+"/"+item.text;
 
-        //同级目录等待返回，并延迟1s，避免数据库写入延迟的影响，确保不乱序
         item.path = await createDoc(indexStack.notebookId, subPath);
         item.path = stack.pPath + "/" + item.path
         temp.push(item);
@@ -105,7 +108,6 @@ async function stackPopAll(stack:IndexStack){
     }
     temp.pPath = stack.pPath;
     await sortDoc(temp);
-    console.log("ok");
 }
 
 async function sortDoc(item : IndexStack){

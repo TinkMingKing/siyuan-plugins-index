@@ -25,6 +25,13 @@
         "min":0,
         "step":1
       },
+      "col": {
+        "title": "目录分列",
+        "content":"设置分列数,默认不分列",
+        "max":5,
+        "min":1,
+        "step":1
+      },
       "icon": {
         "title": "图标",
         "content":"设置插入目录时是否显示图标"
