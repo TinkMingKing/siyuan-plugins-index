@@ -32,15 +32,15 @@ export async function insert() {
     indexQueue = new IndexQueue();
     await createIndex(box, path, indexQueue);
     data = queuePopAll(indexQueue, data);
-    console.log(data);
     if (data != '') {
         await insertData(parentId, data);
-    } else
+    } else{
         showMessage(
             i18n.errorMsg_miss,
             3000,
             "error"
         );
+    }
 }
 
 /**
@@ -582,6 +582,10 @@ async function insertDataAfter(id: string, data: string) {
 
 function queuePopAll(queue: IndexQueue, data: string) {
 
+    if (queue.getFront()?.depth == undefined) {
+        return "";
+    }
+
     let item: IndexQueueNode;
 
     let num = 0;
@@ -599,8 +603,6 @@ function queuePopAll(queue: IndexQueue, data: string) {
         item = queue.pop();
         data += item.text;
         console.log(item.text);
-
-
 
         if (!item.children.isEmpty()) {
             data = queuePopAll(item.children, data);
