@@ -38,7 +38,7 @@
       },
       "autoUpdate": {
         "title": "自动更新",
-        "content":"开启后，被插入的目录会在文档打开时自动更新<br><span style='color: blue;'>注：自动更新规则为本次插入的设置，再次手动插入才能改变自动插入的规则</span>"
+        "content":"开启后，被插入的目录会在文档打开时自动更新<br><span style='color: blue;'>注：自动更新规则为最近一次点击插入的设置项，再次点击插入才能改变自动插入的规则</span>"
       },
       "listType": {
         "title": "目录列表类型",

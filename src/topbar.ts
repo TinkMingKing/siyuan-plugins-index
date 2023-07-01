@@ -86,7 +86,7 @@ export async function createDialog() {
     const dialog = new Dialog({
         title: i18n.settingsTab.name,
         content: `<div id="${settingsDialog}">`,
-        width:"80%",
+        width:"70%",
         height: "80%",
     });
     let settingsTab: SettingsTab;
