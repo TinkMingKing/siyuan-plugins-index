@@ -34,7 +34,7 @@ export async function insert() {
     data = queuePopAll(indexQueue, data);
     if (data != '') {
         await insertData(parentId, data);
-    } else{
+    } else {
         showMessage(
             i18n.errorMsg_miss,
             3000,
@@ -193,6 +193,9 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
         let str = ial.data["custom-index-create"];
         console.log(str);
         settings.loadSettings(JSON.parse(str));
+        if (!settings.get("autoUpdate")) {
+            return;
+        }
         //插入目录
         let data = '';
         indexQueue = new IndexQueue();
@@ -382,6 +385,11 @@ async function createIndexandOutline(notebook: any, ppath: any, pitem: IndexQueu
             } else {
                 data += "1. ";
             }
+
+            // if(settings.get("fold") == tab){
+            //     data += '{: fold="1"}';
+            // }
+
             if (settings.get("icon")) {
                 data += `${getSubdocIcon(icon, subFileCount != 0)} `;
             }
@@ -448,6 +456,11 @@ async function createIndex(notebook: any, ppath: any, pitem: IndexQueue, tab = 0
             } else {
                 data += "1. ";
             }
+
+            // if(settings.get("fold") == tab){
+            //     data += '{: fold="1"}';
+            // }
+
             if (settings.get("icon")) {
                 data += `${getSubdocIcon(icon, subFileCount != 0)} `;
             }
@@ -601,6 +614,19 @@ function queuePopAll(queue: IndexQueue, data: string) {
     while (!queue.isEmpty()) {
         num++;
         item = queue.pop();
+
+        //有子层级时才折叠
+        if (!item.children.isEmpty() && settings.get("fold") == item.depth) {
+            let n = 0;
+            let listType = settings.get("listType") == "unordered" ? true : false;
+            if (listType) {
+                n = item.text.indexOf("*");
+                item.text = item.text.substring(0, n + 2) + '{: fold="1"}' + item.text.substring(n + 2);
+            } else {
+                n = item.text.indexOf("1");
+                item.text = item.text.substring(0, n + 3) + '{: fold="1"}' + item.text.substring(n + 3);
+            }
+        }
         data += item.text;
         console.log(item.text);
 
