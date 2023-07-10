@@ -30,6 +30,7 @@
     let sdocBuilder = settings.get("docBuilder");
     let sautoUpdate = settings.get("autoUpdate");
     let scol = settings.get("col");
+    let sfold = settings.get("fold");
     let icon = sicon == undefined ? true : sicon;
     let autoUpdate = sicon == undefined ? true : sautoUpdate;
     let depth = sdepth == undefined ? 0 : sdepth;
@@ -37,10 +38,12 @@
     let linkType = slinkType == undefined ? "ref" : slinkType;
     let docBuilder = sdocBuilder == undefined ? false : sdocBuilder;
     let col = scol == undefined ? 1 : scol;
+    let fold = sfold == undefined ? 0 : sfold;
 
     onDestroy(() => {
         settings.save();
     });
+    
 </script>
 
 <div class="b3-dialog__content">
@@ -74,6 +77,12 @@
             content={i18n.settingsTab.items.depth}
             settingKey="depth"
             settingValue={depth}
+        />
+        <SettingItem
+            type="range"
+            content={i18n.settingsTab.items.fold}
+            settingKey="fold"
+            settingValue={fold}
         />
         <SettingItem
             type="range"

@@ -25,6 +25,13 @@
         "min":0,
         "step":1
       },
+      "fold": {
+        "title": "目录折叠层级",
+        "content":"设置目录折叠层级,为 <code class='fn__code'>0</code> 时无限制",
+        "max":7,
+        "min":0,
+        "step":1
+      },
       "col": {
         "title": "目录分列",
         "content":"设置分列数,默认不分列",

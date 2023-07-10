@@ -7,6 +7,8 @@ Right click on the plugin icon, call up the settings panel
 `CTRL+ALT+I ` Quick Insert
 
 # Changelog
+- Version 1.3.1
+  - Support setting default directory folding levels. To save manually modified folding states, automatic updates need to be disabled
 - Version 1.2.9
   - Support set column
 - Version 1.2.8

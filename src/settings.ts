@@ -11,7 +11,8 @@ const DEFAULT_CONFIG = {
     linkType:"ref",
     docBuilder: false,
     autoUpdate: true,
-    col:1
+    col:1,
+    fold:0
 };
 
 class Settings{
@@ -49,6 +50,9 @@ class Settings{
         this.set("depth",data.depth);
         this.set("listType",data.listType);
         this.set("linkType",data.linkType);
+        this.set("fold",data.fold);
+        this.set("col",data.col);
+        this.set("autoUpdate",data.autoUpdate);
     }
 
 }
