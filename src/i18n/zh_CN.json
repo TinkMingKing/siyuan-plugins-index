@@ -27,7 +27,7 @@
       },
       "fold": {
         "title": "目录折叠层级",
-        "content":"设置目录折叠层级,为 <code class='fn__code'>0</code> 时无限制",
+        "content":"设置目录折叠层级,为 <code class='fn__code'>0</code> 时无限制，<span style='color: blue;'>如要保存手动修改的折叠状态，需要禁用自动更新</span>",
         "max":7,
         "min":0,
         "step":1
