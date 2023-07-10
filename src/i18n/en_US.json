@@ -27,7 +27,7 @@
       },
       "fold": {
         "title": "Index fold",
-        "content":"Set the Index fold. If set to <code class='fn__code'>0</code> , there will be no limitation",
+        "content":"Set the Index fold. If set to <code class='fn__code'>0</code> , there will be no limitation.To save the manually modified folding state, automatic updates need to be disabled.",
         "max":7,
         "min":0,
         "step":1
