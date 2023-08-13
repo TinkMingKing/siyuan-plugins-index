@@ -38,7 +38,7 @@ async function onSave(dialog:Dialog){
     let el: HTMLInputElement = dialog.element.querySelector("#template-name");
     if(el.value == ""){
         showMessage(
-            "error",
+            i18n.templateNameEepty,
             3000,
             "error"
         );
@@ -56,7 +56,7 @@ async function onSave(dialog:Dialog){
             console.log(iterator.name);
             if(iterator.name.indexOf("template-"+el.value) != -1){
                 showMessage(
-                    "请勿重复添加",
+                    i18n.templateAgain,
                     3000,
                     "error"
                 );
@@ -70,7 +70,7 @@ async function onSave(dialog:Dialog){
     console.log("el:"+el.value);
     dialog.destroy();
     showMessage(
-        "模板创建成功",
+        i18n.templateCreated,
         3000,
         "info"
     );

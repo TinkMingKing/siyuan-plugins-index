@@ -16,7 +16,7 @@
     async function useTemplate() {
         settings.saveTo(name);
         showMessage(
-            "模板套用成功",
+            i18n.templateUsed,
             3000,
             "info"
         );
@@ -36,18 +36,20 @@
         <div style="font-weight: bold;">{realName}</div>
         <div class="fn__flex-1 fn__space" />
         <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
         <span
             class="b3-tooltips b3-tooltips__sw block__icon block__icon--show"
             data-type="switch"
-            aria-label="使用模板"
+            aria-label={i18n.usetemplate}
             on:click={useTemplate}
         >
             <svg><use xlink:href="#iconSelect" /></svg>
         </span>
         <div class="fn__space" />
         <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
         <span
-            aria-label="删除"
+            aria-label={i18n.deleteTemplate}
             class="b3-tooltips b3-tooltips__sw block__icon block__icon--show"
             on:click={deleteTemplate}
         >

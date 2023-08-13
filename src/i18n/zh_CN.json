@@ -15,6 +15,16 @@
   "noneId":"<span style='color: red;'>未获取到文档id，按钮被禁用，你需要先打开一个文档，或者是在需要插入的文档中点击一下</span>",
   "hadId":"<span style='color: green;'>已获取到文档id，可以点击按钮</span>",
   "errorMsg_miss_outline":"当前文档下无大纲",
+  "templateUsed":"模板套用成功",
+  "templateNameEepty":"模板名不能为空",
+  "templateCreated":"模板创建成功",
+  "templateAgain":"请勿重复添加",
+  "useTemplate":"套用模板",
+  "deleteTemplate":"删除模板",
+  "generalSettings":"常规设置",
+  "templateSettings":"模板设置",
+  "extraSettings":"拓展功能",
+  "independentInsert":"独立插入",
   "settingsTab": {
     "name":"目录设置",
     "items": {

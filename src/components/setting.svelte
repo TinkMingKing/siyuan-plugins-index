@@ -7,10 +7,6 @@
     import { getDocid } from "../createIndex";
     import { eventBus } from "../enventbus";
 
-    // beforeUpdate(async () => {
-    //     await settings.load();
-    // });
-
     export let onSubOutlineButton = function () {};
     export let onDocOutlineButton = function () {};
     export let onCreateTemplateButton = function () {};
@@ -81,6 +77,7 @@
 <div class="fn__flex-1 fn__flex config__panel">
     <ul class="b3-tab-bar b3-list b3-list--background">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <li
             data-name="normal"
             class={focus === "normal"
@@ -94,9 +91,10 @@
             <svg class="b3-list-item__graphic"
                 ><use xlink:href="#iconSettings" /></svg
             >
-            <span class="b3-list-item__text">常规设置</span>
+            <span class="b3-list-item__text">{i18n.generalSettings}</span>
         </li>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <li
             data-name="template"
             class={focus === "template"
@@ -110,9 +108,10 @@
             <svg class="b3-list-item__graphic"
                 ><use xlink:href="#iconBazaar" /></svg
             >
-            <span class="b3-list-item__text">模板设置</span>
+            <span class="b3-list-item__text">{i18n.templateSettings}</span>
         </li>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <li
             data-name="extra"
             class={focus === "extra"
@@ -123,9 +122,10 @@
             <svg class="b3-list-item__graphic"
                 ><use xlink:href="#iconList" /></svg
             >
-            <span class="b3-list-item__text">拓展功能</span>
+            <span class="b3-list-item__text">{i18n.extraSettings}</span>
         </li>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <li
             data-name="individual"
             class={focus === "individual"
@@ -136,7 +136,7 @@
             <svg class="b3-list-item__graphic"
                 ><use xlink:href="#iconEdit" /></svg
             >
-            <span class="b3-list-item__text">独立插入</span>
+            <span class="b3-list-item__text">{i18n.independentInsert}</span>
         </li>
     </ul>
     <div class="config__tab-wrap">
