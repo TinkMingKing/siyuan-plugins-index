@@ -6,6 +6,7 @@ import { insert, insertButton, insertDocButton } from "./createIndex";
 import { i18n, plugin } from "./utils";
 import SettingsTab from "./components/setting.svelte"
 import { settings } from "./settings";
+import { onCreateTemplateButton, onGetTemplate } from "./createtemplate";
 
 // //tab类型
 // const TAB_TYPE = "custom_tab";
@@ -80,14 +81,15 @@ export async function initTopbar() {
 export async function createDialog() {
     //载入配置
     await settings.load();
+    await onGetTemplate();
 
     const settingsDialog = "index-settings"
 
     const dialog = new Dialog({
         title: i18n.settingsTab.name,
-        content: `<div id="${settingsDialog}">`,
+        content: `<div id="${settingsDialog}" class="fn__flex-1 fn__flex config__panel">`,
         width:"70%",
-        height: "80%",
+        height: "70%",
     });
     let settingsTab: SettingsTab;
     let div: HTMLDivElement = dialog.element.querySelector(`#${settingsDialog}`);
@@ -96,7 +98,9 @@ export async function createDialog() {
         target: div,
         props:{
             onSubOutlineButton:()=>{insertButton(dialog)},
-            onDocOutlineButton:()=>{insertDocButton(dialog)}
+            onDocOutlineButton:()=>{insertDocButton(dialog)},
+            onCreateTemplateButton:()=>{onCreateTemplateButton()},
+            onGetTemplate:()=>{onGetTemplate()}
         }
     });
 }

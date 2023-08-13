@@ -17,6 +17,7 @@ export default class IndexPlugin extends Plugin {
         this.eventBus.on("click-blockicon", buildDoc);
         //监听文档载入事件
         this.eventBus.on("loaded-protyle", updateIndex);
+        // this.eventBus.on("ws-main",this.eventBusLog);
         
     }
 
@@ -31,7 +32,7 @@ export default class IndexPlugin extends Plugin {
         setPlugin(this);
     }
 
-    // //输出事件detail
+    //输出事件detail
     // private eventBusLog({detail}: any) {
     //     console.log(detail);
     // }

@@ -15,6 +15,16 @@
   "noneId":"<span style='color: red;'>The document ID was not obtained and the button is disabled. You need to first open a document or click on the document that needs to be inserted</span>",
   "hadId":"<span style='color: green;'>Document ID has been obtained, you can click the button</span>",
   "errorMsg_miss_outline":"There is no outline under the current document",
+  "templateUsed":"Template successfully applied",
+  "templateNameEepty":"Template name cannot be empty",
+  "templateCreated":"Template created successfully",
+  "templateAgain":"Do not add again",
+  "useTemplate":"Apply Template",
+  "deleteTemplate":"Delete Template",
+  "generalSettings":"General Settings",
+  "templateSettings":"Template Settings",
+  "extraSettings":"Extra Settings",
+  "independentInsert":"Independent Insert",
   "settingsTab": {
     "name":"Index Settings",
     "items": {
@@ -78,6 +88,11 @@
         "content":"Only the current document outline will be inserted, only affected by the first two settings, and can be repeatedly inserted without updating blocks. It may be used when exporting documents",
         "text":"insert",
         "icon":"#iconAlignCenter"
+      },
+      "createTemplate":"Create Template",
+      "templateDialog": {
+        "title": "Template Name",
+        "save": "Save"
       }
     }
   }

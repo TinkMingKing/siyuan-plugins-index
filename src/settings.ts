@@ -1,3 +1,4 @@
+import { fetchSyncPost } from "siyuan";
 import { plugin } from "./utils";
 
 //配置文件名称
@@ -29,20 +30,43 @@ class Settings{
         await this.load();
     }
 
-    set(key:any, value:any){
-        plugin.data[CONFIG][key] = value;
+    set(key:any, value:any,config = CONFIG){
+        plugin.data[config][key] = value;
     }
 
-    get(key:any){
-        return plugin.data[CONFIG]?.[key];
+    get(key:any,config = CONFIG){
+        return plugin.data[config]?.[key];
     }
 
-    async load(){
-        await plugin.loadData(CONFIG);
+    async load(config = CONFIG){
+        await plugin.loadData(config);
     }
 
-    async save(){
-        await plugin.saveData(CONFIG, plugin.data[CONFIG]);
+    async save(config = CONFIG){
+        await plugin.saveData(config, plugin.data[config]);
+    }
+
+    async saveCopy(config = CONFIG){
+        await plugin.saveData(config, plugin.data[CONFIG]);
+    }
+
+    async saveTo(config:string){
+        plugin.data[config]["docBuilder"] = plugin.data[CONFIG]["docBuilder"];
+        await plugin.saveData(CONFIG, plugin.data[config]);
+    }
+
+    async remove(config = CONFIG){
+        await plugin.removeData(config);
+    }
+
+    async rename(config:string, newname:string){
+        await fetchSyncPost(
+            "/api/file/renameFile",
+            {
+                "path": `/data/storage/petal/siyuan-plugins-index/${config}`,
+                "newPath": `/data/storage/petal/siyuan-plugins-index/${newname}`
+              }
+        );
     }
 
     loadSettings(data: any){
