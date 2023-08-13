@@ -616,7 +616,7 @@ function queuePopAll(queue: IndexQueue, data: string) {
         item = queue.pop();
 
         //有子层级时才折叠
-        if (!item.children.isEmpty() && settings.get("fold") == item.depth) {
+        if (!item.children.isEmpty() && settings.get("fold") <= item.depth) {
             let n = 0;
             let listType = settings.get("listType") == "unordered" ? true : false;
             if (listType) {

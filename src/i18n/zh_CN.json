@@ -78,6 +78,11 @@
         "content":"只会插入当前文档大纲，只受前两个设置项影响，且能够重复插入，不会更新块，通常在导出文档时可能用到它",
         "text":"插入",
         "icon":"#iconAlignCenter"
+      },
+      "createTemplate":"创建模板",
+      "templateDialog": {
+        "title": "模板名称",
+        "save": "保存"
       }
     }
   }

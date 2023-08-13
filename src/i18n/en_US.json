@@ -78,6 +78,11 @@
         "content":"Only the current document outline will be inserted, only affected by the first two settings, and can be repeatedly inserted without updating blocks. It may be used when exporting documents",
         "text":"insert",
         "icon":"#iconAlignCenter"
+      },
+      "createTemplate":"Create Template",
+      "templateDialog": {
+        "title": "Template Name",
+        "save": "Save"
       }
     }
   }
