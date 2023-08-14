@@ -3,12 +3,14 @@
     import { settings } from "../settings";
     import { i18n } from "../utils";
     import TemplateItem from "./template-item.svelte";
+    import { eventBus } from "../enventbus";
     export let name;
     let item;
     let realName = name.substring(9);
     function deleteTemplate() {
         settings.remove(name);
-        item.remove();
+        item.parentNode.remove();
+        eventBus.emit("addTemplateNone");
     }
     // function rename(){
     //     settings.rename(name,"template-"+realName);

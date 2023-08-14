@@ -31,8 +31,8 @@ class EventBus {
     }
 
     once(event: any, listener: any){
-        function callback(){
-            listener();
+        function callback(...args: any[]){
+            listener.apply(this, args);
             this.off(event,callback);
         }
         this.on(event,callback);

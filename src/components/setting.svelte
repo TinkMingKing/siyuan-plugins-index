@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { onDestroy } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { settings } from "../settings";
     import SettingItem from "./setting-item.svelte";
     import TemplateTab from "./template-tab.svelte";
+    import TemplateNone from "./template-none.svelte";
     import { i18n, plugin } from "../utils";
     import { getDocid } from "../createIndex";
     import { eventBus } from "../enventbus";
@@ -12,9 +13,9 @@
     export let onCreateTemplateButton = function () {};
     export let onGetTemplate = function () {};
 
-    let outlineLable;
+    let outlineLable: any;
 
-    let templateTab;
+    let templateTab: any;
 
     let parentId = getDocid();
     let disabled = null;
@@ -58,6 +59,10 @@
     eventBus.on("updateSettings", updateSettings);
 
     function callback(name: string) {
+        let tn = document.getElementById("templatenone");
+        if (tn) {
+            tn.remove();
+        }
         let element = document.createElement("div");
         new TemplateTab({
             target: element,
@@ -67,7 +72,32 @@
         });
         templateTab.appendChild(element);
     }
+
     eventBus.on("addTemplate", callback);
+
+    function switchTab(tab: string) {
+        focus = tab;
+    }
+
+    eventBus.on("switchTab", switchTab);
+
+    function addTemplateNone(){
+        console.log(templateTab.children.length);
+        if (templateTab.children.length == 0) {
+            let element = document.createElement("div");
+            element.id = "templatenone";
+            new TemplateNone({
+                target: element,
+            });
+            templateTab.appendChild(element);
+        }
+    }
+
+    eventBus.on("addTemplateNone", addTemplateNone);
+
+    onMount(() => {
+        eventBus.emit("addTemplateNone");
+    });
 
     onDestroy(() => {
         settings.save();
