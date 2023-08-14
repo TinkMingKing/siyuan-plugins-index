@@ -25,6 +25,8 @@
   "templateSettings":"Template Settings",
   "extraSettings":"Extra Settings",
   "independentInsert":"Independent Insert",
+  "nothasTemplate":"There is currently no template available",
+  "cliketoAdd":"Click to add a template",
   "settingsTab": {
     "name":"Index Settings",
     "items": {

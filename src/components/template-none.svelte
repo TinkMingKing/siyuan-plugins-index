@@ -1,10 +1,11 @@
 <script>
     import { eventBus } from "../enventbus";
+    import { i18n } from "../utils";
 </script>
 
 <div class="b3-label">
     <div class="b3-label b3-label--inner">
-        当前无模版
+        {i18n.nothasTemplate}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <!-- svelte-ignore a11y-missing-attribute -->
@@ -14,7 +15,7 @@
                 console.log("switchTab");
             }}
         >
-            点击前往添加模板
+            {i18n.cliketoAdd}
         </a>
     </div>
 </div>

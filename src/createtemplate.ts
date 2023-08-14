@@ -22,10 +22,9 @@ function getNameDialog(){
         content: `<div id="${settingsDialog}" class="b3-dialog__content">`,
         width:"300px",
     });
-    let templateDialog: TemplateDialog;
     let div: HTMLDivElement = dialog.element.querySelector(`#${settingsDialog}`);
 
-    templateDialog = new TemplateDialog({
+    new TemplateDialog({
         target: div,
         props:{
             onSave: ()=>{onSave(dialog)}

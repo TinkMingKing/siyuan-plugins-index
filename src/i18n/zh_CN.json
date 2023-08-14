@@ -25,6 +25,8 @@
   "templateSettings":"模板设置",
   "extraSettings":"拓展功能",
   "independentInsert":"独立插入",
+  "nothasTemplate":"当前无模版",
+  "cliketoAdd":"点击前往添加模板",
   "settingsTab": {
     "name":"目录设置",
     "items": {
