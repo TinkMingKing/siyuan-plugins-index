@@ -108,7 +108,7 @@ export async function insertDocButton(dialog: Dialog) {
     let data = '';
 
     let outlineData = await requestGetDocOutline(parentId);
-    console.log(outlineData);
+    // console.log(outlineData);
     data = insertOutline(data, outlineData, 0);
 
     if (data != '') {
@@ -180,7 +180,7 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
         }
     );
 
-    console.log(path);
+    // console.log(path);
 
     if (rs.data[0]?.id != undefined) {
         let ial = await fetchSyncPost(
@@ -191,7 +191,7 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
         );
         //载入配置
         let str = ial.data["custom-index-create"];
-        console.log(str);
+        // console.log(str);
         settings.loadSettings(JSON.parse(str));
         if (!settings.get("autoUpdate")) {
             return;
@@ -201,8 +201,8 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
         indexQueue = new IndexQueue();
         await createIndex(notebookId, path, indexQueue);
         data = queuePopAll(indexQueue, data);
-        console.log(plugin.data)
-        console.log("data=" + data)
+        // console.log(plugin.data);
+        // console.log("data=" + data);
         if (data != '') {
             await insertDataAfter(rs.data[0].id, data);
         } else
@@ -288,7 +288,7 @@ function insertOutline(data: string, outlineData: any[], tab: number) {
     tab++;
 
     //生成写入文本
-    console.log("outlineData.length:" + outlineData.length)
+    // console.log("outlineData.length:" + outlineData.length)
     for (let outline of outlineData) {
         let id = outline.id;
         let name = "";
@@ -402,10 +402,10 @@ async function createIndexandOutline(notebook: any, ppath: any, pitem: IndexQueu
                 data += `((${id} '${name}'))\n`;
             }
             let outlineData = await requestGetDocOutline(id);
-            console.log(outlineData);
+            // console.log(outlineData);
             data = insertOutline(data, outlineData, tab);
 
-            console.log(data);
+            // console.log(data);
             let item = new IndexQueueNode(tab, data);
             pitem.push(item);
             //`((id "锚文本"))`
@@ -472,7 +472,7 @@ async function createIndex(notebook: any, ppath: any, pitem: IndexQueue, tab = 0
             } else {
                 data += `((${id} '${name}'))\n`;
             }
-            console.log(data);
+            // console.log(data);
             let item = new IndexQueueNode(tab, data);
             pitem.push(item);
             if (subFileCount > 0) {//获取下一层级子文档
@@ -616,7 +616,7 @@ function queuePopAll(queue: IndexQueue, data: string) {
         item = queue.pop();
 
         //有子层级时才折叠
-        if (!item.children.isEmpty() && settings.get("fold") <= item.depth) {
+        if (!item.children.isEmpty() &&  settings.get("fold")!=0 &&settings.get("fold") <= item.depth ) {
             let n = 0;
             let listType = settings.get("listType") == "unordered" ? true : false;
             if (listType) {
@@ -628,7 +628,7 @@ function queuePopAll(queue: IndexQueue, data: string) {
             }
         }
         data += item.text;
-        console.log(item.text);
+        // console.log(item.text);
 
         if (!item.children.isEmpty()) {
             data = queuePopAll(item.children, data);

@@ -31,6 +31,18 @@ export function escapeHtml(unsafe:any){
     return unsafe.replaceAll('[', '\\[').replaceAll(']', '\\]');
 }
 
+/**
+ * 检测是否包含emoji
+ * @param text 待检测文本
+ * @returns 检测结果
+ */
+export function hasEmoji(text:string){
+    const emojiRegex = /\p{Emoji}/u;
+    // const customemojiRegex = /:.*:/;
+    // return emojiRegex.test(text) && customemojiRegex.test(text);
+    return emojiRegex.test(text);
+}
+
 //运行环境检测
 const frontEnd = getFrontend();
 export const isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile";

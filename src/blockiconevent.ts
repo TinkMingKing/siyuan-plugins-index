@@ -2,7 +2,7 @@ import { fetchSyncPost } from "siyuan";
 import { IndexStackNode, IndexStack } from "./indexnode";
 import { getParentDoc, insertAfter } from "./createIndex";
 import { settings } from "./settings";
-import { i18n } from "./utils";
+import { hasEmoji, i18n } from "./utils";
 
 let indexStack : IndexStack;
 
@@ -51,6 +51,7 @@ async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
                 if (sChildNode.getAttribute('data-type') == "NodeParagraph") {
                     //获取文档标题
                     let text = window.Lute.BlockDOM2Content(sChildNode.innerHTML);
+                    // console.log(text.slice(2)+hasEmoji(text));
                     //创建文档
                     let item = new IndexStackNode(tab,text);
                     pitem.push(item);
@@ -93,8 +94,15 @@ async function stackPopAll(stack:IndexStack){
     let temp = new IndexStack();
     while(!stack.isEmpty()){
         item = stack.pop();
+
+        let text = item.text;
+
+        if(hasEmoji(text.slice(0,2))){
+            text = text.slice(3);
+        }
         
-        let subPath = stack.basePath+"/"+item.text;
+        let subPath = stack.basePath+"/"+text;
+        
 
         item.path = await createDoc(indexStack.notebookId, subPath);
         item.path = stack.pPath + "/" + item.path
