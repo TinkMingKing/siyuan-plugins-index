@@ -42,7 +42,7 @@
         <span
             class="b3-tooltips b3-tooltips__sw block__icon block__icon--show"
             data-type="switch"
-            aria-label={i18n.usetemplate}
+            aria-label={i18n.useTemplate}
             on:click={useTemplate}
         >
             <svg><use xlink:href="#iconSelect" /></svg>

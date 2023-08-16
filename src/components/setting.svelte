@@ -81,7 +81,7 @@
 
     eventBus.on("switchTab", switchTab);
 
-    function addTemplateNone(){
+    function addTemplateNone() {
         console.log(templateTab.children.length);
         if (templateTab.children.length == 0) {
             let element = document.createElement("div");
@@ -244,7 +244,9 @@
         >
             {#each Object.entries(plugin.data) as [key]}
                 {#if key != "config"}
-                    <TemplateTab name={key} />
+                    <div>
+                        <TemplateTab name={key} />
+                    </div>
                 {/if}
             {/each}
         </div>

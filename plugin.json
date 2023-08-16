@@ -2,7 +2,7 @@
   "name": "siyuan-plugins-index",
   "author": "TinkMingKing",
   "url": "https://github.com/TinkMingKing/siyuan-plugins-index",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "minAppVersion": "2.8.10",
   "backends": ["all"],
   "frontends": ["all"],
