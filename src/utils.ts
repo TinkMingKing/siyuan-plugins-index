@@ -28,7 +28,7 @@ export function setPlugin(_plugin: any) {
  * @returns 处理后的字符串
  */
 export function escapeHtml(unsafe:any){
-    return unsafe.replaceAll('[', '\\[').replaceAll(']', '\\]');
+    return unsafe.replaceAll('[', '\\[').replaceAll(']', '\\]').replaceAll('\'', '&apos;');
 }
 
 /**
