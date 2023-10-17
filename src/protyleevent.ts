@@ -1,4 +1,4 @@
-import { insertAuto } from "./createIndex";
+// import { insertAuto } from "./createIndex";
 import { isMobile } from "./utils";
 // import { settings } from "./settings";
 
@@ -13,5 +13,5 @@ export function updateIndex({ detail }: any) {
     let notebookId = detail.notebookId;
     let path = detail.path;
     let parentId = detail.block.rootID;
-    insertAuto(notebookId,path,parentId);
+    // insertAuto(notebookId,path,parentId);
 }

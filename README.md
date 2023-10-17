@@ -7,6 +7,8 @@ Right click on the plugin icon, call up the settings panel
 `CTRL+ALT+I ` Quick Insert
 
 # Changelog
+- Version 1.4.6
+  - Remove auto update index
 - Version 1.4.0
   - Optimize the interface and support template settings
 - Version 1.3.1

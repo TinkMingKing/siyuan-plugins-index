@@ -11,7 +11,7 @@ const DEFAULT_CONFIG = {
     listType:"unordered",
     linkType:"ref",
     docBuilder: false,
-    autoUpdate: true,
+    // autoUpdate: true,
     col:1,
     fold:0
 };
@@ -76,7 +76,7 @@ class Settings{
         this.set("linkType",data.linkType);
         this.set("fold",data.fold);
         this.set("col",data.col);
-        this.set("autoUpdate",data.autoUpdate);
+        // this.set("autoUpdate",data.autoUpdate);
     }
 
 }

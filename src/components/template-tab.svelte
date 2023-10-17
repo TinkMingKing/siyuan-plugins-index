@@ -108,7 +108,7 @@
             settingValue={settings.get("col",name)}
             {name}
         />
-        <div class="fn__hr" />
+        <!--        <div class="fn__hr" />
         <TemplateItem
             type="switch"
             content={i18n.settingsTab.items.autoUpdate}
@@ -116,5 +116,5 @@
             settingValue={settings.get("autoUpdate",name)}
             {name}
         />
-    </div>
+    </div> -->
 </label>
