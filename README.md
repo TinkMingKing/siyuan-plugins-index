@@ -7,7 +7,7 @@ Right click on the plugin icon, call up the settings panel
 `CTRL+ALT+I ` Quick Insert
 
 # Changelog
-- Version 1.4.6
+- Version 1.4.7
   - Support auto update index again and fix focus bugs
 - Version 1.4.6
   - Remove auto update index
