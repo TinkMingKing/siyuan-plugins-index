@@ -33,7 +33,7 @@
     let sdocBuilder = settings.get("docBuilder");
     let scol = settings.get("col");
     let sfold = settings.get("fold");
- //   let sautoUpdate = settings.get("autoUpdate");
+    let sautoUpdate = settings.get("autoUpdate");
 
     let icon = sicon == undefined ? true : sicon;
     let depth = sdepth == undefined ? 0 : sdepth;
@@ -42,7 +42,7 @@
     let docBuilder = sdocBuilder == undefined ? false : sdocBuilder;
     let col = scol == undefined ? 1 : scol;
     let fold = sfold == undefined ? 0 : sfold;
- //   let autoUpdate = sicon == undefined ? true : sautoUpdate;
+    let autoUpdate = sicon == undefined ? true : sautoUpdate;
 
     let focus = "normal";
 
@@ -212,12 +212,12 @@
                 settingKey="col"
                 settingValue={col}
             />
-<!--        <SettingItem
+            <SettingItem
                 type="switch"
                 content={i18n.settingsTab.items.autoUpdate}
                 settingKey="autoUpdate"
                 settingValue={autoUpdate}
-            /> -->
+            />
             <label
                 class="fn__flex b3-label config__item"
                 style="flex-direction: column;"
