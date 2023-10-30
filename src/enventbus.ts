@@ -1,9 +1,13 @@
+/**
+ * 事件类——发布者、订阅者模式
+ */
 class EventBus {
     private events: {};
     constructor() {
         this.events = {};
     }
 
+    //发布
     on(event: any, listener: any) {
         if (!this.events[event]) {
             this.events[event] = [];
@@ -11,6 +15,7 @@ class EventBus {
         this.events[event].push(listener);
     }
 
+    //关闭
     off(event: any, listener: any) {
         if (!this.events[event]) {
             return;
@@ -21,6 +26,7 @@ class EventBus {
         }
     }
 
+    //订阅
     emit(event: any, ...args: any[]) {
         if (!this.events[event]) {
             return;
@@ -30,6 +36,7 @@ class EventBus {
         });
     }
 
+    //订阅一次
     once(event: any, listener: any){
         function callback(...args: any[]){
             listener.apply(this, args);

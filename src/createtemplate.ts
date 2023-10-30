@@ -1,19 +1,22 @@
 import { Dialog, fetchSyncPost, showMessage } from "siyuan";
-import { i18n, plugin } from "./utils";
+import { i18n } from "./utils";
 import TemplateDialog from "./components/template-dialog.svelte"
 import { settings } from "./settings";
 import { eventBus } from "./enventbus";
 
 /**
- * 点击创建配置模板
+ * 创建配置模板
  * @returns void
  */
 export async function onCreateTemplateButton() {
     getNameDialog();
-    console.log("create template");
+    // console.log("create template");
 
 }
 
+/**
+ * 接收模板名弹窗
+ */
 function getNameDialog(){
     const settingsDialog = "index-get-template-name";
 
@@ -32,6 +35,11 @@ function getNameDialog(){
     });
 }
 
+/**
+ * 保存模板
+ * @param dialog 弹窗
+ * @returns void
+ */
 async function onSave(dialog:Dialog){
 
     let el: HTMLInputElement = dialog.element.querySelector("#template-name");
@@ -52,7 +60,7 @@ async function onSave(dialog:Dialog){
         let data = rs.data;
 
         for (const iterator of data) {
-            console.log(iterator.name);
+            // console.log(iterator.name);
             if(iterator.name.indexOf("template-"+el.value) != -1){
                 showMessage(
                     i18n.templateAgain,
@@ -66,7 +74,7 @@ async function onSave(dialog:Dialog){
         eventBus.emit("addTemplate","template-"+el.value);
         
     }
-    console.log("el:"+el.value);
+    // console.log("el:"+el.value);
     dialog.destroy();
     showMessage(
         i18n.templateCreated,
@@ -75,6 +83,9 @@ async function onSave(dialog:Dialog){
     );
 }
 
+/**
+ * 加载模板
+ */
 export async function onGetTemplate(){
     let rs = await fetchSyncPost(
         "/api/file/readDir",
@@ -91,8 +102,8 @@ export async function onGetTemplate(){
         }
     }
 
-    for (const key in plugin.data) {
-        console.log(key);
-    }
+    // for (const key in plugin.data) {
+    //     console.log(key);
+    // }
     
 }

@@ -23,7 +23,7 @@ export function setPlugin(_plugin: any) {
 }
 
 /**
- * 替换字符串中的`[]`字符
+ * 替换字符串中的导致异常的字符字符
  * @param unsafe 待处理字符串
  * @returns 处理后的字符串
  */
@@ -31,17 +31,17 @@ export function escapeHtml(unsafe:any){
     return unsafe.replaceAll('[', '\\[').replaceAll(']', '\\]').replaceAll('\'', '&apos;');
 }
 
-/**
- * 检测是否包含emoji
- * @param text 待检测文本
- * @returns 检测结果
- */
-export function hasEmoji(text:string){
-    const emojiRegex = /\p{Emoji}/u;
-    // const customemojiRegex = /:.*:/;
-    // return emojiRegex.test(text) && customemojiRegex.test(text);
-    return emojiRegex.test(text);
-}
+// /**
+//  * 检测是否包含emoji
+//  * @param text 待检测文本
+//  * @returns 检测结果
+//  */
+// export function hasEmoji(text:string){
+//     const emojiRegex = /\p{Emoji}/u;
+//     // const customemojiRegex = /:.*:/;
+//     // return emojiRegex.test(text) && customemojiRegex.test(text);
+//     return emojiRegex.test(text);
+// }
 
 //运行环境检测
 const frontEnd = getFrontend();

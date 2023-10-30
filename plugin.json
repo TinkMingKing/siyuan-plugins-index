@@ -2,8 +2,8 @@
   "name": "siyuan-plugins-index",
   "author": "TinkMingKing",
   "url": "https://github.com/TinkMingKing/siyuan-plugins-index",
-  "version": "1.4.7",
-  "minAppVersion": "2.8.10",
+  "version": "1.4.8",
+  "minAppVersion": "2.10.12",
   "backends": ["all"],
   "frontends": ["all"],
   "displayName": {
@@ -29,5 +29,8 @@
     "custom": [
       "https://afdian.net/a/MingKing"
     ]
-  }
+  },
+  "keywords": [
+    "index", "目录"
+  ]
 }

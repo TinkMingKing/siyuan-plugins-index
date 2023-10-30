@@ -2,10 +2,16 @@ import { fetchSyncPost } from "siyuan";
 import { IndexStackNode, IndexStack } from "./indexnode";
 import { getParentDoc, insertAfter } from "./createIndex";
 import { settings } from "./settings";
-import { hasEmoji, i18n } from "./utils";
+import { i18n } from "./utils";
 
+//目录栈
 let indexStack : IndexStack;
 
+/**
+ * 块标菜单回调
+ * @param param0 事件细节
+ * @returns void
+ */
 export function buildDoc({ detail }: any) {
     //如果选中块大于1或不是列表块或未开启按钮，则直接结束
     if (detail.blockElements.length > 1 || 
@@ -28,6 +34,7 @@ export function buildDoc({ detail }: any) {
  * @param detail 
  */
 async function parseBlockDOM(detail: any) {
+    // console.log(detail);
     indexStack = new IndexStack();
     indexStack.notebookId = detail.protyle.notebookId;
     let docId = detail.blockElements[0].getAttribute("data-node-id");
@@ -38,7 +45,7 @@ async function parseBlockDOM(detail: any) {
     await parseChildNodes(block,indexStack);
     await stackPopAll(indexStack);
     await insertAfter(indexStack.notebookId,docId,docData[1]);
-    window.location.reload();
+    // window.location.reload();
 }
 
 async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
@@ -51,7 +58,7 @@ async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
                 if (sChildNode.getAttribute('data-type') == "NodeParagraph") {
                     //获取文档标题
                     let text = window.Lute.BlockDOM2Content(sChildNode.innerHTML);
-                    // console.log(text.slice(2)+hasEmoji(text));
+                    // console.log(text);
                     //创建文档
                     let item = new IndexStackNode(tab,text);
                     pitem.push(item);
@@ -64,6 +71,11 @@ async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
     }
 }
 
+/**
+ * 获取文档块路径
+ * @param id 文档块id
+ * @returns 文档块路径
+ */
 async function getRootDoc(id:string){
     
     let response = await fetchSyncPost(
@@ -76,6 +88,12 @@ async function getRootDoc(id:string){
     return result?.hpath;
 }
 
+/**
+ * 创建文档
+ * @param notebookId 笔记本id
+ * @param hpath 文档路径
+ * @returns 响应内容
+ */
 async function createDoc(notebookId:string,hpath:string){
     let response = await fetchSyncPost(
         "/api/filetree/createDocWithMd",
@@ -89,6 +107,10 @@ async function createDoc(notebookId:string,hpath:string){
     return response.data;
 }
 
+/**
+ * 全部出栈
+ * @param stack 目录栈
+ */
 async function stackPopAll(stack:IndexStack){
     let item : IndexStackNode;
     let temp = new IndexStack();
@@ -97,12 +119,11 @@ async function stackPopAll(stack:IndexStack){
 
         let text = item.text;
 
-        if(hasEmoji(text.slice(0,2))){
-            text = text.slice(3);
-        }
+        // if(hasEmoji(text.slice(0,2))){
+        //     text = text.slice(3);
+        // }
         
         let subPath = stack.basePath+"/"+text;
-        
 
         item.path = await createDoc(indexStack.notebookId, subPath);
         item.path = stack.pPath + "/" + item.path
@@ -110,29 +131,38 @@ async function stackPopAll(stack:IndexStack){
         if(!item.children.isEmpty()){
             item.children.basePath = subPath;
             item.children.pPath = item.path;
-            await stackPopAll(item.children);
-            // stackPopAll(item.children); //可能更快
+            // await stackPopAll(item.children);
+            stackPopAll(item.children); //可能更快
         }
     }
     temp.pPath = stack.pPath;
-    await sortDoc(temp);
+    // await sortDoc(temp);
 }
 
-async function sortDoc(item : IndexStack){
-    //构建真实顺序
-    let paths = [];
-    while(!item.isEmpty()){
-        paths.push(item.pop().path+".sy");
-    }
-    await requestChangeSort(paths,indexStack.notebookId);
-}
+// /**
+//  * 文档排序
+//  * @param item 文档id栈
+//  */
+// async function sortDoc(item : IndexStack){
+//     //构建真实顺序
+//     let paths = [];
+//     while(!item.isEmpty()){
+//         paths.push(item.pop().path+".sy");
+//     }
+//     await requestChangeSort(paths,indexStack.notebookId);
+// }
 
-async function requestChangeSort(paths:any[],notebook:string){
-    await fetchSyncPost(
-        "/api/filetree/changeSort",
-        {
-            paths: paths,
-            notebook: notebook
-        }
-    );
-}
+// /**
+//  * 排序请求
+//  * @param paths 路径顺序
+//  * @param notebook 笔记本id
+//  */
+// async function requestChangeSort(paths:any[],notebook:string){
+//     await fetchSyncPost(
+//         "/api/filetree/changeSort",
+//         {
+//             paths: paths,
+//             notebook: notebook
+//         }
+//     );
+// }

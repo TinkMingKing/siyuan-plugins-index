@@ -16,7 +16,7 @@ export default class IndexPlugin extends Plugin {
         //监听块菜单事件
         this.eventBus.on("click-blockicon", buildDoc);
         //监听文档载入事件
-        this.eventBus.on("loaded-protyle", updateIndex);
+        this.eventBus.on("loaded-protyle-static", updateIndex);
         // this.eventBus.on("ws-main",this.eventBusLog);
         
     }

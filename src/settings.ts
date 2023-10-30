@@ -16,6 +16,9 @@ const DEFAULT_CONFIG = {
     fold:0
 };
 
+/**
+ * 配置类
+ */
 class Settings{
 
     //初始化配置文件
