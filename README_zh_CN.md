@@ -1,3 +1,5 @@
+[English](https://github.com/TinkMingKing/siyuan-plugins-index/blob/main/README.md)
+
 # 目录插件
 
 启用插件后，会在顶栏右侧生成一个插件图标

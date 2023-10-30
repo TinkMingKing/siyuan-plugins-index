@@ -1,3 +1,5 @@
+[中文](https://github.com/TinkMingKing/siyuan-plugins-index/blob/main/README_zh_CN.md)
+
 # Index Plugin
 
 After enabling the plugin, a plugin icon will be generated on the right side of the topbar
@@ -6,7 +8,7 @@ Left click on the plugin icon , insert a index list to current document
 
 Right click on the plugin icon, call up the settings panel
 
-`CTRL+ALT+I ` Quick Insert
+`CTRL+ALT+I` Quick Insert
 
 # Changelog
 - Version 1.4.8
