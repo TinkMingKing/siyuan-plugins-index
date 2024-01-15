@@ -11,6 +11,13 @@ Right click on the plugin icon, call up the settings panel
 `CTRL+ALT+I` Quick Insert
 
 # Changelog
+- Version 1.4.9
+  -Support setting outline prefix
+  -Support automatic update of outline
+  -Fix bugs with invalid insert directory and outline
+  -Add Settings Button
+  -Support setting separate outline styles
+  -Change outline style to reference block wrapping
 - Version 1.4.8
   - Fix document builder and improve user experience
 - Version 1.4.7

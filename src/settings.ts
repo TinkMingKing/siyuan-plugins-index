@@ -13,7 +13,9 @@ const DEFAULT_CONFIG = {
     docBuilder: false,
     autoUpdate: true,
     col:1,
-    fold:0
+    fold:0,
+    at:1,
+    outlineAutoUpdate: false
 };
 
 /**
@@ -80,6 +82,12 @@ class Settings{
         this.set("fold",data.fold);
         this.set("col",data.col);
         this.set("autoUpdate",data.autoUpdate);
+    }
+
+    loadSettingsforOutline(data: any){
+        this.set("at",data.at);
+        this.set("outlineType",data.outlineType);
+        this.set("outlineAutoUpdate",data.outlineAutoUpdate);
     }
 
 }

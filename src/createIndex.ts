@@ -72,6 +72,7 @@ export async function insertButton(dialog: Dialog) {
     indexQueue = new IndexQueue();
     await createIndexandOutline(box, path, indexQueue);
     data = queuePopAll(indexQueue, data);
+    console.log(data);
     if (data != '') {
         await insertDataSimple(parentId, data);
     } else {
@@ -109,22 +110,10 @@ export async function insertDocButton(dialog: Dialog) {
 
     let outlineData = await requestGetDocOutline(parentId);
     // console.log(outlineData);
-    data = insertOutline(data, outlineData, 0);
+    data = insertOutline(data, outlineData, 0, 0);
 
     if (data != '') {
-        await fetchSyncPost(
-            "/api/block/insertBlock",
-            {
-                data: data,
-                dataType: "markdown",
-                parentID: parentId
-            }
-        );
-        showMessage(
-            i18n.msg_success,
-            3000,
-            "info"
-        );
+        await insertDataOutline(parentId, data);
     } else {
         showMessage(
             i18n.errorMsg_miss_outline,
@@ -215,6 +204,58 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
 
 }
 
+/**
+ * 自动更新大纲
+ * @param notebookId 笔记本id 
+ * @param path 目标文档路径
+ * @param parentId 目标文档id
+ */
+export async function insertOutlineAuto(parentId: string) {
+
+    //载入配置
+    await settings.load();
+
+    let rs = await fetchSyncPost(
+        "/api/query/sql",
+        {
+            stmt: `SELECT * FROM blocks WHERE root_id = '${parentId}' AND ial like '%custom-outline-create%' order by updated desc limit 1`
+        }
+    );
+
+    // console.log(path);
+
+    if (rs.data[0]?.id != undefined) {
+        let ial = await fetchSyncPost(
+            "/api/attr/getBlockAttrs",
+            {
+                id: rs.data[0].id
+            }
+        );
+        //载入配置
+        let str = ial.data["custom-outline-create"];
+        // console.log(str);
+        settings.loadSettings(JSON.parse(str));
+        if (!settings.get("outlineAutoUpdate")) {
+            return;
+        }
+        //插入目录
+        let data = '';
+        let outlineData = await requestGetDocOutline(parentId);
+        data = insertOutline(data, outlineData, 0, 0);
+        // console.log(plugin.data);
+        // console.log("data=" + data);
+        if (data != '') {
+            await insertOutlineDataAfter(rs.data[0].id, data);
+        } else
+            showMessage(
+                i18n.errorMsg_miss,
+                3000,
+                "error"
+            );
+    }
+
+}
+
 // //获取当前文档信息
 // export async function getParentDoc(parentId: string) {
 
@@ -283,7 +324,7 @@ async function requestGetDocOutline(blockId: string) {
     return result;
 }
 
-function insertOutline(data: string, outlineData: any[], tab: number) {
+function insertOutline(data: string, outlineData: any[], tab: number, stab: number) {
 
     tab++;
 
@@ -300,7 +341,13 @@ function insertOutline(data: string, outlineData: any[], tab: number) {
 
         // let icon = doc.icon;
         let subOutlineCount = outline.count;
-        for (let n = 1; n < tab; n++) {
+        for (let n = 1; n <= stab; n++) {
+            data += '    ';
+        }
+
+        data += "> ";
+
+        for (let n = 1; n < tab - stab; n++) {
             data += '    ';
         }
 
@@ -316,18 +363,26 @@ function insertOutline(data: string, outlineData: any[], tab: number) {
         }
 
         //置入数据
-        let linkType = settings.get("linkType") == "ref" ? true : false;
-        if (linkType) {
-            data += `[@${name}](siyuan://blocks/${id})\n`;
+        let outlineType = settings.get("outlineType") == "copy" ? true : false;
+        let at = settings.get("at") ? "@" : "";
+
+        if(outlineType){
+            data += `${at}${name}((${id} '*'))\n`;
         } else {
-            data += `((${id} '@${name}'))\n`;
+            outlineType = settings.get("outlineType") == "ref" ? true : false;
+            if (outlineType) {
+                data += `[${at}${name}](siyuan://blocks/${id})\n`;
+            } else {
+                data += `((${id} '${at}${name}'))\n`;
+            }
         }
+        
         //`((id "锚文本"))`
         if (subOutlineCount > 0) {//获取下一层级子文档
             if (outline.depth == 0) {
-                data = insertOutline(data, outline.blocks, tab);
+                data = insertOutline(data, outline.blocks, tab, stab);
             } else {
-                data = insertOutline(data, outline.children, tab);
+                data = insertOutline(data, outline.children, tab, stab);
             }
         }
 
@@ -401,16 +456,21 @@ async function createIndexandOutline(notebook: any, ppath: any, pitem: IndexQueu
             } else {
                 data += `((${id} '${name}'))\n`;
             }
-            let outlineData = await requestGetDocOutline(id);
-            // console.log(outlineData);
-            data = insertOutline(data, outlineData, tab);
+
+            //大纲改为引述块样式todo
+            // if(subFileCount == 0){
+                let outlineData = await requestGetDocOutline(id);
+                // console.log(id);
+                // console.log(outlineData);
+                data = insertOutline(data, outlineData, tab, tab);
+            // }
 
             // console.log(data);
             let item = new IndexQueueNode(tab, data);
             pitem.push(item);
             //`((id "锚文本"))`
             if (subFileCount > 0) {//获取下一层级子文档
-                await createIndex(notebook, path, item.children, tab);
+                await createIndexandOutline(notebook, path, item.children, tab);
             }
 
         }
@@ -570,6 +630,74 @@ async function insertDataSimple(id: string, data: string) {
 
 }
 
+//插入大纲数据
+async function insertDataOutline(id: string, data: string) {
+
+    try {
+        let rs = await fetchSyncPost(
+            "/api/query/sql",
+            {
+                stmt: `SELECT * FROM blocks WHERE root_id = '${id}' AND ial like '%custom-outline-create%' order by updated desc limit 1`
+            }
+        );
+        if (rs.data[0]?.id == undefined) {
+            let result = await fetchSyncPost(
+                "/api/block/insertBlock",
+                {
+                    data: data,
+                    dataType: "markdown",
+                    parentID: id
+                }
+            );
+            await fetchSyncPost(
+                "/api/attr/setBlockAttrs",
+                {
+                    id: result.data[0].doOperations[0].id,
+                    attrs: {
+                        "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
+                    }
+                }
+            );
+            showMessage(
+                i18n.msg_success,
+                3000,
+                "info"
+            );
+        } else {
+            let result = await fetchSyncPost(
+                "/api/block/updateBlock",
+                {
+                    data: data,
+                    dataType: "markdown",
+                    id: rs.data[0].id
+                }
+            );
+            await fetchSyncPost(
+                "/api/attr/setBlockAttrs",
+                {
+                    id: result.data[0].doOperations[0].id,
+                    attrs: {
+                        "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
+                    }
+                }
+            );
+            showMessage(
+                i18n.update_success,
+                3000,
+                "info"
+            );
+        }
+    } catch (error) {
+        showMessage(
+            i18n.dclike,
+            3000,
+            "error"
+        );
+    }
+
+
+}
+
 //插入数据
 async function insertDataAfter(id: string, data: string) {
 
@@ -587,6 +715,29 @@ async function insertDataAfter(id: string, data: string) {
             id: result.data[0].doOperations[0].id,
             attrs: {
                 "custom-index-create": JSON.stringify(plugin.data[CONFIG])
+            }
+        }
+    );
+
+}
+
+//插入数据
+async function insertOutlineDataAfter(id: string, data: string) {
+
+    let result = await fetchSyncPost(
+        "/api/block/updateBlock",
+        {
+            data: data,
+            dataType: "markdown",
+            id: id
+        }
+    );
+    await fetchSyncPost(
+        "/api/attr/setBlockAttrs",
+        {
+            id: result.data[0].doOperations[0].id,
+            attrs: {
+                "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
             }
         }
     );

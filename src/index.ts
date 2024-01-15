@@ -1,6 +1,6 @@
 import { Plugin } from "siyuan";
 import { setI18n, setPlugin } from "./utils";
-import { initTopbar } from "./topbar";
+import { createDialog, initTopbar } from "./topbar";
 import { settings } from "./settings";
 import { buildDoc } from "./blockiconevent";
 import { updateIndex } from "./protyleevent";
@@ -12,6 +12,7 @@ export default class IndexPlugin extends Plugin {
         console.log("IndexPlugin onload");
         this.init();
         await initTopbar();
+        // await this.initSettings();
         await settings.initData();
         //监听块菜单事件
         this.eventBus.on("click-blockicon", buildDoc);
@@ -36,5 +37,8 @@ export default class IndexPlugin extends Plugin {
     // private eventBusLog({detail}: any) {
     //     console.log(detail);
     // }
+    async openSetting(){
+        await createDialog();
+    }
 
 }

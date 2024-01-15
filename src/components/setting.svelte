@@ -34,6 +34,9 @@
     let scol = settings.get("col");
     let sfold = settings.get("fold");
     let sautoUpdate = settings.get("autoUpdate");
+    let sat = settings.get("at");
+    let soutlineType = settings.get("outlineType");
+    let soutlineAutoUpdate = settings.get("outlineAutoUpdate");
 
     let icon = sicon == undefined ? true : sicon;
     let depth = sdepth == undefined ? 0 : sdepth;
@@ -43,6 +46,9 @@
     let col = scol == undefined ? 1 : scol;
     let fold = sfold == undefined ? 0 : sfold;
     let autoUpdate = sicon == undefined ? true : sautoUpdate;
+    let at = sat == undefined ? true : sat;
+    let outlineType = soutlineType == undefined ? "ref" : soutlineType;
+    let outlineAutoUpdate = soutlineAutoUpdate == undefined ? false : soutlineAutoUpdate;
 
     let focus = "normal";
 
@@ -274,6 +280,24 @@
                     {@html outlineLable}
                 </div>
             </div>
+            <SettingItem
+                type="switch"
+                content={i18n.settingsTab.items.at}
+                settingKey="at"
+                settingValue={at}
+            />
+            <SettingItem
+                type="select"
+                content={i18n.settingsTab.items.outlineType}
+                settingKey="outlineType"
+                settingValue={outlineType}
+            />
+            <SettingItem
+                type="switch"
+                content={i18n.settingsTab.items.outlineAutoUpdate}
+                settingKey="outlineAutoUpdate"
+                settingValue={outlineAutoUpdate}
+            />
             <SettingItem
                 type="button"
                 content={i18n.settingsTab.items.subOutlineButton}

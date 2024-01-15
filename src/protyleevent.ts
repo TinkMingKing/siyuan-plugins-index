@@ -1,4 +1,4 @@
-import { insertAuto } from "./createIndex";
+import { insertAuto, insertOutlineAuto } from "./createIndex";
 import { isMobile } from "./utils";
 // import { settings } from "./settings";
 
@@ -28,4 +28,5 @@ export function updateIndex({ detail }: any) {
     let parentId = detail.protyle.block.rootID;
     // 自动插入
     insertAuto(notebookId,path,parentId);
+    insertOutlineAuto(parentId);
 }

@@ -13,20 +13,23 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.4.6",
+    "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@tsconfig/svelte": "^5.0.2",
-    "@types/node": "^20.8.9",
-    "fast-glob": "^3.3.1",
+    "@types/node": "^20.11.0",
+    "fast-glob": "^3.3.2",
     "glob": "^10.3.10",
     "minimist": "^1.2.8",
     "rollup-plugin-livereload": "^2.0.5",
-    "sass": "^1.69.5",
-    "siyuan": "^0.8.7",
-    "svelte": "^4.2.2",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0",
-    "vite-plugin-static-copy": "^0.17.0",
-    "vite-plugin-zip-pack": "^1.0.6"
+    "sass": "^1.69.7",
+    "siyuan": "^0.9.2",
+    "svelte": "^4.2.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vite-plugin-static-copy": "^1.0.0",
+    "vite-plugin-zip-pack": "^1.0.7"
+  },
+  "dependencies": {
+    "pnpm": "^8.14.1"
   }
 }

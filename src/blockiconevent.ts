@@ -9,7 +9,7 @@ let indexStack : IndexStack;
 
 /**
  * 块标菜单回调
- * @param param0 事件细节
+ * @param detail 事件细节
  * @returns void
  */
 export function buildDoc({ detail }: any) {
