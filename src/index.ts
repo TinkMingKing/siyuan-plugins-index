@@ -21,6 +21,9 @@ export default class IndexPlugin extends Plugin {
         // this.eventBus.on("ws-main",this.eventBusLog);
         
     }
+    // onLayoutReady() {
+    //     initObserver();
+    // }
 
     //卸载插件
     onunload() {

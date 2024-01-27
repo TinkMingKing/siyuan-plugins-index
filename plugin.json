@@ -2,7 +2,7 @@
   "name": "siyuan-plugins-index",
   "author": "TinkMingKing",
   "url": "https://github.com/TinkMingKing/siyuan-plugins-index",
-  "version": "1.4.9",
+  "version": "1.5.0",
   "minAppVersion": "2.10.12",
   "backends": ["all"],
   "frontends": ["all"],
@@ -12,7 +12,7 @@
   },
   "description": {
     "default": "One click insert a index list in document",
-    "zh_CN": "一键在文档中插入目录列表"
+    "zh_CN": "一键在文档中插入目录或大纲列表"
   },
   "readme": {
     "default": "README.md",

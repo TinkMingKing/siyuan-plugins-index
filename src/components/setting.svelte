@@ -5,26 +5,26 @@
     import TemplateTab from "./template-tab.svelte";
     import TemplateNone from "./template-none.svelte";
     import { i18n, plugin } from "../utils";
-    import { getDocid } from "../createIndex";
+    // import { getDocid } from "../createIndex";
     import { eventBus } from "../enventbus";
 
-    export let onSubOutlineButton = function () {};
-    export let onDocOutlineButton = function () {};
+    // export let onSubOutlineButton = function () {};
+    // export let onDocOutlineButton = function () {};
     export let onCreateTemplateButton = function () {};
     export let onGetTemplate = function () {};
 
-    let outlineLable: any;
+    // let outlineLable: any;
 
     let templateTab: any;
 
-    let parentId = getDocid();
-    let disabled = null;
-    if (parentId == null) {
-        disabled = "disabled";
-        outlineLable = i18n.noneId;
-    } else {
-        outlineLable = i18n.hadId;
-    }
+    // let parentId = getDocid();
+    // let disabled = null;
+    // if (parentId == null) {
+    //     disabled = "disabled";
+    //     outlineLable = i18n.noneId;
+    // } else {
+    //     outlineLable = i18n.hadId;
+    // }
 
     let sicon = settings.get("icon");
     let sdepth = settings.get("depth");
@@ -125,9 +125,26 @@
             }}
         >
             <svg class="b3-list-item__graphic"
-                ><use xlink:href="#iconSettings" /></svg
+                ><use xlink:href="#iconList" /></svg
             >
             <span class="b3-list-item__text">{i18n.generalSettings}</span>
+        </li>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+        <li
+            data-name="outline"
+            class={focus === "outline"
+                ? "b3-list-item--focus b3-list-item"
+                : "b3-list-item"}
+            on:click={() => {
+                focus = "outline";
+                eventBus.emit("updateSettings");
+            }}
+        >
+            <svg class="b3-list-item__graphic"
+                ><use xlink:href="#iconAlignCenter" /></svg
+            >
+            <span class="b3-list-item__text">{i18n.outlineSettings}</span>
         </li>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
@@ -156,13 +173,13 @@
             on:click={() => (focus = "extra")}
         >
             <svg class="b3-list-item__graphic"
-                ><use xlink:href="#iconList" /></svg
+                ><use xlink:href="#iconSQL" /></svg
             >
             <span class="b3-list-item__text">{i18n.extraSettings}</span>
         </li>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-        <li
+        <!-- <li
             data-name="individual"
             class={focus === "individual"
                 ? "b3-list-item--focus b3-list-item"
@@ -173,7 +190,7 @@
                 ><use xlink:href="#iconEdit" /></svg
             >
             <span class="b3-list-item__text">{i18n.independentInsert}</span>
-        </li>
+        </li> -->
     </ul>
     <div class="config__tab-wrap">
         <div
@@ -242,6 +259,47 @@
             </label>
         </div>
         <div
+            data-name="outline"
+            class={focus === "outline"
+                ? "config__tab-container"
+                : "config__tab-container fn__none"}
+        >
+            <SettingItem
+                type="switch"
+                content={i18n.settingsTab.items.at}
+                settingKey="at"
+                settingValue={at}
+            />
+            <SettingItem
+                type="select"
+                content={i18n.settingsTab.items.outlineType}
+                settingKey="outlineType"
+                settingValue={outlineType}
+            />
+            <SettingItem
+                type="switch"
+                content={i18n.settingsTab.items.outlineAutoUpdate}
+                settingKey="outlineAutoUpdate"
+                settingValue={outlineAutoUpdate}
+            />
+            <label
+                class="fn__flex b3-label config__item"
+                style="flex-direction: column;"
+            >
+                <div class="fn__flex">
+                    <div class="fn__flex-1" />
+                    <button
+                        class="b3-button b3-button--outline fn__flex-center fn__size200"
+                        id="createtemplate"
+                        on:click={onCreateTemplateButton}
+                    >
+                        <svg><use xlink:href="#iconAdd" /></svg>
+                        {i18n.settingsTab.items.createTemplate}
+                    </button>
+                </div>
+            </label>
+        </div>
+        <div
             data-name="template"
             class={focus === "template"
                 ? "config__tab-container"
@@ -269,7 +327,7 @@
                 settingValue={docBuilder}
             />
         </div>
-        <div
+        <!-- <div
             data-name="individual"
             class={focus === "individual"
                 ? "config__tab-container"
@@ -280,24 +338,6 @@
                     {@html outlineLable}
                 </div>
             </div>
-            <SettingItem
-                type="switch"
-                content={i18n.settingsTab.items.at}
-                settingKey="at"
-                settingValue={at}
-            />
-            <SettingItem
-                type="select"
-                content={i18n.settingsTab.items.outlineType}
-                settingKey="outlineType"
-                settingValue={outlineType}
-            />
-            <SettingItem
-                type="switch"
-                content={i18n.settingsTab.items.outlineAutoUpdate}
-                settingKey="outlineAutoUpdate"
-                settingValue={outlineAutoUpdate}
-            />
             <SettingItem
                 type="button"
                 content={i18n.settingsTab.items.subOutlineButton}
@@ -314,6 +354,6 @@
                 onMyClick={onDocOutlineButton}
                 {disabled}
             />
-        </div>
+        </div> -->
     </div>
 </div>

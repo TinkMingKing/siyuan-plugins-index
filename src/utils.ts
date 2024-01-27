@@ -1,5 +1,6 @@
 import { getFrontend } from "siyuan";
 import IndexPlugin from ".";
+import { Client } from "@siyuan-community/siyuan-sdk";
 
 /**
  * 延迟函数
@@ -46,3 +47,6 @@ export function escapeHtml(unsafe:any){
 //运行环境检测
 const frontEnd = getFrontend();
 export const isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile";
+
+/* 初始化客户端 (默认使用 Axios 发起 XHR 请求) */
+ export const client = new Client();

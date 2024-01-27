@@ -1,5 +1,9 @@
 {
   "addTopBarIcon": "Insert Index",
+  "insertIndex": "Insert Index",
+  "insertSubIndexoutline": "Insert Subdocument Index and Outline",
+  "insertoutline": "Insert Outline",
+  "settings": "Settings",
   "cancel": "Cancel",
   "save": "Save",
   "byeMenu": "Bye, Menu!",
@@ -21,7 +25,8 @@
   "templateAgain":"Do not add again",
   "useTemplate":"Apply Template",
   "deleteTemplate":"Delete Template",
-  "generalSettings":"General Settings",
+  "generalSettings":"Index Settings",
+  "outlineSettings": "Outline Settings",
   "templateSettings":"Template Settings",
   "extraSettings":"Extra Settings",
   "independentInsert":"Independent Insert",
@@ -87,7 +92,7 @@
       },
       "docOutlineButton": {
         "title": "insert doc outline",
-        "content":"Only the current document outline will be inserted, only affected by the first two settings, and can be repeatedly inserted without updating blocks. It may be used when exporting documents",
+        "content":"Only the current document outline will be inserted. It may be used when exporting documents",
         "text":"insert",
         "icon":"#iconAlignCenter"
       },

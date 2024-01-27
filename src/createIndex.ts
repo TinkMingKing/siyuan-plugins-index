@@ -1,12 +1,12 @@
-import { Dialog, fetchSyncPost, showMessage } from 'siyuan';
-import { escapeHtml, i18n, isMobile, plugin } from './utils';
+import { Dialog } from 'siyuan';
+import { client, escapeHtml, i18n, isMobile, plugin } from './utils';
 import { CONFIG, settings } from './settings';
 import { IndexQueue, IndexQueueNode } from './indexnode';
 
 let indexQueue: IndexQueue;
 
 /**
- * 点击topbar按钮插入目录
+ * 左键点击topbar按钮插入目录
  * @returns void
  */
 export async function insert() {
@@ -16,30 +16,30 @@ export async function insert() {
     //寻找当前编辑的文档的id
     let parentId = getDocid();
     if (parentId == null) {
-        showMessage(
-            i18n.errorMsg_empty,
-            3000,
-            "error"
-        );
+        client.pushErrMsg({
+            msg: i18n.errorMsg_empty,
+            timeout: 3000
+        });
         return;
     }
 
     //获取文档数据
-    let [box, path] = await getParentDoc(parentId);
+    let block = await client.getBlockInfo({
+        id: parentId
+    });
 
     //插入目录
     let data = '';
     indexQueue = new IndexQueue();
-    await createIndex(box, path, indexQueue);
+    await createIndex(block.data.box, block.data.path, indexQueue);
     data = queuePopAll(indexQueue, data);
     if (data != '') {
-        await insertData(parentId, data);
+        await insertData(parentId, data, "index");
     } else {
-        showMessage(
-            i18n.errorMsg_miss,
-            3000,
-            "error"
-        );
+        client.pushErrMsg({
+            msg: i18n.errorMsg_miss,
+            timeout: 3000
+        });
     }
 }
 
@@ -47,7 +47,7 @@ export async function insert() {
  * 点击插入带大纲的目录
  * @returns void
  */
-export async function insertButton(dialog: Dialog) {
+export async function insertButton(dialog?: Dialog) {
     //载入配置
     await settings.load();
 
@@ -56,31 +56,31 @@ export async function insertButton(dialog: Dialog) {
     //寻找当前编辑的文档的id
     let parentId = getDocid();
     if (parentId == null) {
-        showMessage(
-            i18n.errorMsg_empty,
-            3000,
-            "error"
-        );
+        client.pushErrMsg({
+            msg: i18n.errorMsg_empty,
+            timeout: 3000
+        });
         return;
     }
 
     //获取文档数据
-    let [box, path] = await getParentDoc(parentId);
+    let block = await client.getBlockInfo({
+        id: parentId
+    });
 
     //插入目录
     let data = '';
     indexQueue = new IndexQueue();
-    await createIndexandOutline(box, path, indexQueue);
+    await createIndexandOutline(block.data.box, block.data.path, indexQueue);
     data = queuePopAll(indexQueue, data);
     console.log(data);
     if (data != '') {
         await insertDataSimple(parentId, data);
     } else {
-        showMessage(
-            i18n.errorMsg_miss,
-            3000,
-            "error"
-        );
+        client.pushErrMsg({
+            msg: i18n.errorMsg_miss,
+            timeout: 3000
+        });
         return;
     }
     dialog.destroy();
@@ -90,18 +90,17 @@ export async function insertButton(dialog: Dialog) {
  * 点击插入大纲
  * @returns void
  */
-export async function insertDocButton(dialog: Dialog) {
+export async function insertDocButton(dialog?: Dialog) {
     //载入配置
     await settings.load();
 
     //寻找当前编辑的文档的id
     let parentId = getDocid();
     if (parentId == null) {
-        showMessage(
-            i18n.errorMsg_empty,
-            3000,
-            "error"
-        );
+        client.pushErrMsg({
+            msg: i18n.errorMsg_empty,
+            timeout: 3000
+        });
         return;
     }
 
@@ -113,13 +112,12 @@ export async function insertDocButton(dialog: Dialog) {
     data = insertOutline(data, outlineData, 0, 0);
 
     if (data != '') {
-        await insertDataOutline(parentId, data);
+        await insertData(parentId, data, "outline");
     } else {
-        showMessage(
-            i18n.errorMsg_miss_outline,
-            3000,
-            "error"
-        );
+        client.pushErrMsg({
+            msg: i18n.errorMsg_miss_outline,
+            timeout: 3000
+        });
         return;
     }
 
@@ -142,13 +140,13 @@ export async function insertAfter(notebookId: string, parentId: string, path: st
     await createIndex(notebookId, path, indexQueue);
     data = queuePopAll(indexQueue, data);
     if (data != '') {
-        await insertDataAfter(parentId, data);
-    } else
-        showMessage(
-            i18n.errorMsg_miss,
-            3000,
-            "error"
-        );
+        await insertDataAfter(parentId, data, "index");
+    } else{
+        client.pushErrMsg({
+            msg: i18n.errorMsg_miss,
+            timeout: 3000
+        });
+    }
 }
 
 /**
@@ -162,22 +160,16 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
     //载入配置
     await settings.load();
 
-    let rs = await fetchSyncPost(
-        "/api/query/sql",
-        {
-            stmt: `SELECT * FROM blocks WHERE root_id = '${parentId}' AND ial like '%custom-index-create%' order by updated desc limit 1`
-        }
-    );
+    let rs = await client.sql({
+        stmt: `SELECT * FROM blocks WHERE root_id = '${parentId}' AND ial like '%custom-index-create%' order by updated desc limit 1`
+    })
 
     // console.log(path);
-
     if (rs.data[0]?.id != undefined) {
-        let ial = await fetchSyncPost(
-            "/api/attr/getBlockAttrs",
-            {
-                id: rs.data[0].id
-            }
-        );
+        let ial = await client.getBlockAttrs({
+            id: rs.data[0].id
+        });
+
         //载入配置
         let str = ial.data["custom-index-create"];
         // console.log(str);
@@ -193,13 +185,13 @@ export async function insertAuto(notebookId: string, path: string, parentId: str
         // console.log(plugin.data);
         // console.log("data=" + data);
         if (data != '') {
-            await insertDataAfter(rs.data[0].id, data);
-        } else
-            showMessage(
-                i18n.errorMsg_miss,
-                3000,
-                "error"
-            );
+            await insertDataAfter(rs.data[0].id, data, "index");
+        } else {
+            client.pushErrMsg({
+                msg: i18n.errorMsg_miss,
+                timeout: 3000
+            });
+        }
     }
 
 }
@@ -215,22 +207,17 @@ export async function insertOutlineAuto(parentId: string) {
     //载入配置
     await settings.load();
 
-    let rs = await fetchSyncPost(
-        "/api/query/sql",
-        {
-            stmt: `SELECT * FROM blocks WHERE root_id = '${parentId}' AND ial like '%custom-outline-create%' order by updated desc limit 1`
-        }
-    );
+    let rs = await client.sql({
+        stmt: `SELECT * FROM blocks WHERE root_id = '${parentId}' AND ial like '%custom-outline-create%' order by updated desc limit 1`
+    })
+
 
     // console.log(path);
 
     if (rs.data[0]?.id != undefined) {
-        let ial = await fetchSyncPost(
-            "/api/attr/getBlockAttrs",
-            {
-                id: rs.data[0].id
-            }
-        );
+        let ial = await client.getBlockAttrs({
+            id: rs.data[0].id
+        });
         //载入配置
         let str = ial.data["custom-outline-create"];
         // console.log(str);
@@ -245,49 +232,16 @@ export async function insertOutlineAuto(parentId: string) {
         // console.log(plugin.data);
         // console.log("data=" + data);
         if (data != '') {
-            await insertOutlineDataAfter(rs.data[0].id, data);
-        } else
-            showMessage(
-                i18n.errorMsg_miss,
-                3000,
-                "error"
-            );
+            await insertDataAfter(rs.data[0].id, data, "outline");
+        } else {
+            client.pushErrMsg({
+                msg: i18n.errorMsg_miss,
+                timeout: 3000
+            });
+        }
+
     }
 
-}
-
-// //获取当前文档信息
-// export async function getParentDoc(parentId: string) {
-
-//     let response = await fetchSyncPost(
-//         "/api/query/sql",
-//         {
-//             stmt: `SELECT * FROM blocks WHERE id = '${parentId}'`
-//         }
-//     );
-//     let result = response.data[0];
-//     // console.log(response);
-//     //返回值为数组
-//     let box = result.box;
-//     let path = result.path;
-//     return [box, path];
-// }
-
-//获取当前文档信息
-export async function getParentDoc(parentId: string) {
-
-    let response = await fetchSyncPost(
-        "/api/block/getBlockInfo",
-        {
-            id: parentId
-        }
-    );
-    let result = response.data;
-    // console.log(response);
-    //返回值为数组
-    let box = result.box;
-    let path = result.path;
-    return [box, path];
 }
 
 //获取当前文档id
@@ -298,27 +252,10 @@ export function getDocid() {
         return document.querySelector('.layout__wnd--active .protyle.fn__flex-1:not(.fn__none) .protyle-background')?.getAttribute("data-node-id");
 }
 
-//获取子文档数据
-export async function requestSubdoc(notebook: any, path: any) {
-    let response = await fetchSyncPost(
-        "/api/filetree/listDocsByPath",
-        {
-            notebook: notebook,
-            path: path
-        }
-    );
-    let result = response.data;
-    if (result == null) return [];
-    return result.files;
-}
-
 async function requestGetDocOutline(blockId: string) {
-    let response = await fetchSyncPost(
-        "/api/outline/getDocOutline",
-        {
-            id: blockId
-        }
-    );
+    let response = await client.getDocOutline({
+        id: blockId
+    });
     let result = response.data;
     if (result == null) return [];
     return result;
@@ -392,7 +329,7 @@ function insertOutline(data: string, outlineData: any[], tab: number, stab: numb
 
 
 
-//处理图标
+//获取图标
 function getSubdocIcon(icon: string, hasChild: boolean) {
     if (icon == '' || icon == undefined) {
         return hasChild ? "📑" : "📄";
@@ -414,11 +351,15 @@ async function createIndexandOutline(notebook: any, ppath: any, pitem: IndexQueu
 
     if (settings.get("depth") == 0 || settings.get("depth") > tab) {
 
-        let docs = await requestSubdoc(notebook, ppath);
+        // let docs = await client.listDocsByPath(notebook, ppath);
+        let docs = await client.listDocsByPath({
+            notebook: notebook,
+            path: ppath
+        });
         tab++;
 
         //生成写入文本
-        for (let doc of docs) {
+        for (let doc of docs.data.files) {
 
             let data = "";
             let id = doc.id;
@@ -490,11 +431,14 @@ async function createIndex(notebook: any, ppath: any, pitem: IndexQueue, tab = 0
 
     if (settings.get("depth") == 0 || settings.get("depth") > tab) {
 
-        let docs = await requestSubdoc(notebook, ppath);
+        let docs = await client.listDocsByPath({
+            notebook: notebook,
+            path: ppath
+        });
         tab++;
 
         //生成写入文本
-        for (let doc of docs) {
+        for (let doc of docs.data.files) {
 
             let data = "";
             let id = doc.id;
@@ -543,204 +487,106 @@ async function createIndex(notebook: any, ppath: any, pitem: IndexQueue, tab = 0
     }
 }
 
-//插入数据
-async function insertData(id: string, data: string) {
-
-    try {
-        let rs = await fetchSyncPost(
-            "/api/query/sql",
-            {
-                stmt: `SELECT * FROM blocks WHERE root_id = '${id}' AND ial like '%custom-index-create%' order by updated desc limit 1`
-            }
-        );
-        if (rs.data[0]?.id == undefined) {
-            let result = await fetchSyncPost(
-                "/api/block/insertBlock",
-                {
-                    data: data,
-                    dataType: "markdown",
-                    parentID: id
-                }
-            );
-            await fetchSyncPost(
-                "/api/attr/setBlockAttrs",
-                {
-                    id: result.data[0].doOperations[0].id,
-                    attrs: {
-                        "custom-index-create": JSON.stringify(plugin.data[CONFIG])
-                    }
-                }
-            );
-            showMessage(
-                i18n.msg_success,
-                3000,
-                "info"
-            );
-        } else {
-            let result = await fetchSyncPost(
-                "/api/block/updateBlock",
-                {
-                    data: data,
-                    dataType: "markdown",
-                    id: rs.data[0].id
-                }
-            );
-            await fetchSyncPost(
-                "/api/attr/setBlockAttrs",
-                {
-                    id: result.data[0].doOperations[0].id,
-                    attrs: {
-                        "custom-index-create": JSON.stringify(plugin.data[CONFIG])
-                    }
-                }
-            );
-            showMessage(
-                i18n.update_success,
-                3000,
-                "info"
-            );
-        }
-    } catch (error) {
-        showMessage(
-            i18n.dclike,
-            3000,
-            "error"
-        );
-    }
-
-
-}
 
 //插入数据
 async function insertDataSimple(id: string, data: string) {
 
-    await fetchSyncPost(
-        "/api/block/insertBlock",
-        {
-            data: data,
-            dataType: "markdown",
-            parentID: id
-        }
-    );
-    showMessage(
-        i18n.msg_success,
-        3000,
-        "info"
-    );
+    await client.insertBlock({
+        data: data,
+        dataType: 'markdown',
+        parentID: id
+    });
+
+    client.pushMsg({
+        msg: i18n.msg_success,
+        timeout: 3000
+    });
 
 }
 
-//插入大纲数据
-async function insertDataOutline(id: string, data: string) {
+//插入数据
+async function insertData(id: string, data: string, type: string) {
+
+    let attrs : any;
+
+    if(type == "index"){
+        attrs = {
+            "custom-index-create": JSON.stringify(plugin.data[CONFIG])
+        };
+    } else if(type == "outline"){
+        attrs = {
+            "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
+        };
+    }
 
     try {
-        let rs = await fetchSyncPost(
-            "/api/query/sql",
-            {
-                stmt: `SELECT * FROM blocks WHERE root_id = '${id}' AND ial like '%custom-outline-create%' order by updated desc limit 1`
-            }
-        );
+        let rs = await client.sql({
+            stmt: `SELECT * FROM blocks WHERE root_id = '${id}' AND ial like '%custom-${type}-create%' order by updated desc limit 1`
+        });
         if (rs.data[0]?.id == undefined) {
-            let result = await fetchSyncPost(
-                "/api/block/insertBlock",
-                {
-                    data: data,
-                    dataType: "markdown",
-                    parentID: id
-                }
-            );
-            await fetchSyncPost(
-                "/api/attr/setBlockAttrs",
-                {
-                    id: result.data[0].doOperations[0].id,
-                    attrs: {
-                        "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
-                    }
-                }
-            );
-            showMessage(
-                i18n.msg_success,
-                3000,
-                "info"
-            );
+            let result = await client.insertBlock({
+                data: data,
+                dataType: 'markdown',
+                parentID: id
+            });
+            await client.setBlockAttrs({
+                attrs: attrs,
+                id: result.data[0].doOperations[0].id
+            });
+            client.pushMsg({
+                msg: i18n.msg_success,
+                timeout: 3000
+            });
         } else {
-            let result = await fetchSyncPost(
-                "/api/block/updateBlock",
-                {
-                    data: data,
-                    dataType: "markdown",
-                    id: rs.data[0].id
-                }
-            );
-            await fetchSyncPost(
-                "/api/attr/setBlockAttrs",
-                {
-                    id: result.data[0].doOperations[0].id,
-                    attrs: {
-                        "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
-                    }
-                }
-            );
-            showMessage(
-                i18n.update_success,
-                3000,
-                "info"
-            );
+            let result = await client.updateBlock({
+                data: data,
+                dataType: 'markdown',
+                id: rs.data[0].id
+            });
+            await client.setBlockAttrs({
+                attrs: attrs,
+                id: result.data[0].doOperations[0].id
+            });
+            client.pushMsg({
+                msg: i18n.update_success,
+                timeout: 3000
+            });
         }
     } catch (error) {
-        showMessage(
-            i18n.dclike,
-            3000,
-            "error"
-        );
+        client.pushErrMsg({
+            msg: i18n.dclike,
+            timeout: 3000
+        });
     }
 
 
 }
 
 //插入数据
-async function insertDataAfter(id: string, data: string) {
+async function insertDataAfter(id: string, data: string, type: string) {
 
-    let result = await fetchSyncPost(
-        "/api/block/updateBlock",
-        {
-            data: data,
-            dataType: "markdown",
-            id: id
-        }
-    );
-    await fetchSyncPost(
-        "/api/attr/setBlockAttrs",
-        {
-            id: result.data[0].doOperations[0].id,
-            attrs: {
-                "custom-index-create": JSON.stringify(plugin.data[CONFIG])
-            }
-        }
-    );
+    let attrs : any;
 
-}
+    if(type == "index"){
+        attrs = {
+            "custom-index-create": JSON.stringify(plugin.data[CONFIG])
+        };
+    } else if(type == "outline"){
+        attrs = {
+            "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
+        };
+    }
 
-//插入数据
-async function insertOutlineDataAfter(id: string, data: string) {
+    let result = await client.updateBlock({
+        data: data,
+        dataType: "markdown",
+        id: id
+    });
 
-    let result = await fetchSyncPost(
-        "/api/block/updateBlock",
-        {
-            data: data,
-            dataType: "markdown",
-            id: id
-        }
-    );
-    await fetchSyncPost(
-        "/api/attr/setBlockAttrs",
-        {
-            id: result.data[0].doOperations[0].id,
-            attrs: {
-                "custom-outline-create": JSON.stringify(plugin.data[CONFIG])
-            }
-        }
-    );
+    await client.setBlockAttrs({
+        id: result.data[0].doOperations[0].id,
+        attrs: attrs
+    });
 
 }
 

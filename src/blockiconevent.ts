@@ -1,8 +1,7 @@
-import { fetchSyncPost } from "siyuan";
 import { IndexStackNode, IndexStack } from "./indexnode";
-import { getParentDoc, insertAfter } from "./createIndex";
+import { insertAfter } from "./createIndex";
 import { settings } from "./settings";
-import { i18n } from "./utils";
+import { client, i18n } from "./utils";
 
 //目录栈
 let indexStack : IndexStack;
@@ -40,11 +39,14 @@ async function parseBlockDOM(detail: any) {
     let docId = detail.blockElements[0].getAttribute("data-node-id");
     let block = detail.blockElements[0].childNodes;
     indexStack.basePath = await getRootDoc(docId);
-    let docData = await getParentDoc(detail.protyle.block.rootID);
-    indexStack.pPath = docData[1].slice(0, -3);
+    let docData = await client.getBlockInfo({
+        id: detail.protyle.block.rootID
+    });
+    // let docData = await getParentDoc(detail.protyle.block.rootID);
+    indexStack.pPath = docData.data.path.slice(0, -3);
     await parseChildNodes(block,indexStack);
     await stackPopAll(indexStack);
-    await insertAfter(indexStack.notebookId,docId,docData[1]);
+    await insertAfter(indexStack.notebookId,docId,docData.data.path);
     // window.location.reload();
 }
 
@@ -77,13 +79,11 @@ async function parseChildNodes(childNodes: any,pitem:IndexStack, tab = 0) {
  * @returns 文档块路径
  */
 async function getRootDoc(id:string){
+
+    let response = await client.sql({
+        stmt: `SELECT * FROM blocks WHERE id = '${id}'`
+    });
     
-    let response = await fetchSyncPost(
-        "/api/query/sql",
-        {
-            stmt: `SELECT * FROM blocks WHERE id = '${id}'`
-        }
-    );
     let result = response.data[0];
     return result?.hpath;
 }
@@ -95,16 +95,14 @@ async function getRootDoc(id:string){
  * @returns 响应内容
  */
 async function createDoc(notebookId:string,hpath:string){
-    let response = await fetchSyncPost(
-        "/api/filetree/createDocWithMd",
-        {
-            notebook: notebookId,
-            path: hpath,
-            markdown: ""
-        }
-          
-    );
+
+    let response = await client.createDocWithMd({
+        markdown: "",
+        notebook: notebookId,
+        path: hpath
+    });
     return response.data;
+
 }
 
 /**

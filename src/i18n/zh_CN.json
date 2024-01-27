@@ -1,5 +1,9 @@
 {
   "addTopBarIcon": "插入目录",
+  "insertIndex": "插入目录",
+  "insertSubIndexoutline": "插入子文档目录及大纲",
+  "insertoutline": "插入当前文档大纲",
+  "settings": "设置",
   "cancel": "取消",
   "save": "保存",
   "byeMenu": "再见，菜单！",
@@ -21,7 +25,8 @@
   "templateAgain": "请勿重复添加",
   "useTemplate": "套用模板",
   "deleteTemplate": "删除模板",
-  "generalSettings": "常规设置",
+  "generalSettings": "目录设置",
+  "outlineSettings": "大纲设置",
   "templateSettings": "模板设置",
   "extraSettings": "拓展功能",
   "independentInsert": "独立插入",
@@ -87,7 +92,7 @@
       },
       "docOutlineButton": {
         "title": "插入当前文档大纲",
-        "content": "只会插入当前文档大纲，只受前两个设置项影响，且能够重复插入，不会更新块，通常在导出文档时可能用到它",
+        "content": "插入当前文档大纲，通常在导出文档时可能用到它",
         "text": "插入",
         "icon": "#iconAlignCenter"
       },
