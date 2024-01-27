@@ -14,6 +14,10 @@
 
 `CTRL + ALT + P`插入当前文档大纲
 
+# 反馈地址
+
+[反馈地址](https://ld246.com/article/1698684433007)
+
 # 更新日志
 
 [CHANGELOG](https://github.com/TinkMingKing/siyuan-plugins-index/blob/main/CHANGELOG.md)
