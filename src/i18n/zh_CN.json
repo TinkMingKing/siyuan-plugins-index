@@ -25,7 +25,8 @@
   "templateAgain": "请勿重复添加",
   "useTemplate": "套用模板",
   "deleteTemplate": "删除模板",
-  "generalSettings": "目录设置",
+  "generalSettings": "常规设置",
+  "indexSettings": "目录设置",
   "outlineSettings": "大纲设置",
   "templateSettings": "模板设置",
   "extraSettings": "拓展功能",
@@ -33,7 +34,7 @@
   "nothasTemplate": "当前无模版",
   "cliketoAdd": "点击前往添加模板",
   "settingsTab": {
-    "name": "目录设置",
+    "name": "设置",
     "items": {
       "depth": {
         "title": "目录索引深度",
@@ -74,7 +75,7 @@
       },
       "linkType": {
         "title": "链接类型",
-        "content": "设置链接类型",
+        "content": "设置目录链接类型",
         "options": {
           "ref": "链接",
           "embed": "引用"
@@ -106,8 +107,8 @@
         "content": "启用后将会在大纲前加入<code class='fn__code'>@</code>符号"
       },
       "outlineType": {
-        "title": "大纲类型",
-        "content": "设置大纲类型",
+        "title": "链接类型",
+        "content": "设置大纲链接类型",
         "options": {
           "ref": "链接",
           "embed": "引用",
@@ -117,6 +118,14 @@
       "outlineAutoUpdate": {
         "title": "当前文档大纲自动更新",
         "content": "开启后，被插入的当前文档大纲自动会在文档打开时自动更新<br><span style='color: blue;'>注：自动更新规则为最近一次点击插入的设置项，再次点击插入才能改变自动插入的规则</span>"
+      },
+      "listTypeOutline": {
+        "title": "大纲列表类型",
+        "content": "设置大纲列表类型",
+        "options": {
+          "unordered": "无序列表",
+          "ordered": "有序列表"
+        }
       }
     }
   }

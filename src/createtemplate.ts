@@ -61,7 +61,7 @@ async function onSave(dialog:Dialog){
 
         for (const iterator of data) {
             // console.log(iterator.name);
-            if(iterator.name.indexOf("template-"+el.value) != -1){
+            if(iterator.name.indexOf("template-index-"+el.value) != -1){
                 showMessage(
                     i18n.templateAgain,
                     3000,
@@ -70,8 +70,8 @@ async function onSave(dialog:Dialog){
                 return;
             }
         }
-        await settings.saveCopy("template-"+el.value);
-        eventBus.emit("addTemplate","template-"+el.value);
+        await settings.saveCopy("template-index-"+el.value);
+        eventBus.emit("addTemplateIndex","template-index-"+el.value);
         
     }
     // console.log("el:"+el.value);
@@ -97,7 +97,7 @@ export async function onGetTemplate(){
     let data = rs.data;
 
     for (const iterator of data) {
-        if(iterator.name.startsWith("template-")){
+        if(iterator.name.startsWith("template-index-")){
             await settings.load(iterator.name);
         }
     }

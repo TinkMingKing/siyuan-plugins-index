@@ -25,8 +25,9 @@ export default class IndexPlugin extends Plugin {
     //     initObserver();
     // }
 
-    //卸载插件
     onunload() {
+        this.eventBus.off("click-blockicon", buildDoc);
+        this.eventBus.off("loaded-protyle-static", updateIndex);
         console.log("IndexPlugin onunload");
     }
 

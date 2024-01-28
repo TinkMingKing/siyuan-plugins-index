@@ -25,7 +25,8 @@
   "templateAgain":"Do not add again",
   "useTemplate":"Apply Template",
   "deleteTemplate":"Delete Template",
-  "generalSettings":"Index Settings",
+  "generalSettings":"General Settings",
+  "indexSettings": "Index Settings",
   "outlineSettings": "Outline Settings",
   "templateSettings":"Template Settings",
   "extraSettings":"Extra Settings",
@@ -33,7 +34,7 @@
   "nothasTemplate":"There is currently no template available",
   "cliketoAdd":"Click to add a template",
   "settingsTab": {
-    "name":"Index Settings",
+    "name":"Settings",
     "items": {
       "depth": {
         "title": "Index depth",

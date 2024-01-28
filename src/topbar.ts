@@ -132,8 +132,8 @@ export async function createDialog() {
         props: {
             // onSubOutlineButton: () => { insertButton(dialog) },
             // onDocOutlineButton: () => { insertDocButton(dialog) },
-            onCreateTemplateButton: () => { onCreateTemplateButton() },
-            onGetTemplate: () => { onGetTemplate() }
+            onCreateTemplateButton: () => onCreateTemplateButton(),
+            onGetIndexTemplate: () => onGetTemplate()
         }
     });
 }

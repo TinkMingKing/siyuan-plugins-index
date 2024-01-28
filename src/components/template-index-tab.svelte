@@ -6,14 +6,14 @@
     import { eventBus } from "../enventbus";
     export let name;
     let item;
-    let realName = name.substring(9);
+    let realName = name.substring(15);
     function deleteTemplate() {
         settings.remove(name);
         item.parentNode.remove();
-        eventBus.emit("addTemplateNone");
+        eventBus.emit("addTemplateIndexNone");
     }
     // function rename(){
-    //     settings.rename(name,"template-"+realName);
+    //     settings.rename(name,"template-index-"+realName);
     // }
     async function useTemplate() {
         settings.saveTo(name);
@@ -35,7 +35,7 @@
             bind:value={realName}
             on:change={rename}
         /> -->
-        <div style="font-weight: bold;">{realName}</div>
+        <div style="font-weight: bold;font-size: 16px;">{realName}</div>
         <div class="fn__flex-1 fn__space" />
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->

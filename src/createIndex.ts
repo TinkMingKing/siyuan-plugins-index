@@ -292,7 +292,7 @@ function insertOutline(data: string, outlineData: any[], tab: number, stab: numb
         name = escapeHtml(name);
 
         //应用设置
-        let listType = settings.get("listType") == "unordered" ? true : false;
+        let listType = settings.get("listTypeOutline") == "unordered" ? true : false;
         if (listType) {
             data += "* ";
         } else {

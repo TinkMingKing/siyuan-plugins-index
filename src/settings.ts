@@ -14,8 +14,9 @@ const DEFAULT_CONFIG = {
     autoUpdate: true,
     col:1,
     fold:0,
-    at:1,
-    outlineAutoUpdate: false
+    at:true,
+    outlineAutoUpdate: false,
+    listTypeOutline:"unordered",
 };
 
 /**
