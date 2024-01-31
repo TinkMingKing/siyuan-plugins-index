@@ -9,9 +9,12 @@ import { isMobile } from "./utils";
  */
 export function updateIndex({ detail }: any) {
     // console.log(detail);
+    // console.log(detail.protyle.element.className);
     //如果不为手机端且为聚焦状态，就直接返回，否则查询更新
     if (!isMobile) {
         if(
+            //为搜索界面
+            detail.protyle.element.className.indexOf("search") != -1 ||
             // 为浮窗
             // detail.model == undefined || 
             detail.protyle.block.showAll){
