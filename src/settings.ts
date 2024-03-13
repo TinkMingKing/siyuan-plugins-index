@@ -89,6 +89,7 @@ class Settings{
         this.set("at",data.at);
         this.set("outlineType",data.outlineType);
         this.set("outlineAutoUpdate",data.outlineAutoUpdate);
+        this.set("listTypeOutline",data.listTypeOutline);
     }
 
 }

@@ -338,7 +338,7 @@
                         <SettingItem
                             type="select"
                             content={i18n.settingsTab.items.listTypeOutline}
-                            settingKey="listType"
+                            settingKey="listTypeOutline"
                             settingValue={listTypeOutline}
                         />
                         <SettingItem
