@@ -118,6 +118,14 @@
       "outlineAutoUpdate": {
         "title": "The current document outline is automatically updated",
         "content": "After opening, the outline of the inserted current document will be automatically updated when the document is opened<br><span style='color: blue;'>PS: The automatic update rule is based on the settings item that was last clicked for insertion. Clicking Insert again will change the automatic insertion rule</span>"
+      },
+      "listTypeOutline": {
+        "title": "Outline List type",
+        "content": "Set outline List type",
+        "options": {
+          "unordered": "Unordered List",
+          "ordered": "Ordered List"
+        }
       }
     }
   }
