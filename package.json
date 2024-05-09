@@ -14,24 +14,24 @@
     "update": "pnpm update -L"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.0.2",
-    "@tsconfig/svelte": "^5.0.2",
-    "@types/node": "^20.11.27",
+    "@sveltejs/vite-plugin-svelte": "^3.1.0",
+    "@tsconfig/svelte": "^5.0.4",
+    "@types/node": "^20.12.11",
     "fast-glob": "^3.3.2",
-    "glob": "^10.3.10",
+    "glob": "^10.3.12",
     "minimist": "^1.2.8",
     "rollup-plugin-livereload": "^2.0.5",
-    "sass": "^1.71.1",
-    "siyuan": "^0.9.5",
-    "svelte": "^4.2.12",
+    "sass": "^1.77.0",
+    "siyuan": "^0.9.8",
+    "svelte": "^4.2.16",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2",
-    "vite": "^5.1.6",
-    "vite-plugin-static-copy": "^1.0.1",
-    "vite-plugin-zip-pack": "^1.2.2"
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vite-plugin-static-copy": "^1.0.4",
+    "vite-plugin-zip-pack": "^1.2.3"
   },
   "dependencies": {
-    "@siyuan-community/siyuan-sdk": "^0.3.7",
-    "pnpm": "^8.15.4"
+    "@siyuan-community/siyuan-sdk": "^0.3.9",
+    "pnpm": "^9.1.0"
   }
 }

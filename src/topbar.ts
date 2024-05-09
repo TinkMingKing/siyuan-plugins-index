@@ -3,7 +3,7 @@ import {
     //  fetchSyncPost,
     //  openTab
 } from "siyuan";
-import { insert, insertButton, insertDocButton } from "./createIndex";
+import { insert, insertButton, insertDocButton, insertNotebookButton } from "./createIndex";
 import { i18n, isMobile, plugin } from "./utils";
 import SettingsTab from "./components/setting.svelte"
 import { settings } from "./settings";
@@ -46,6 +46,14 @@ export async function initTopbar() {
         hotkey: "⌥⌘P",
         callback: async () => {
             insertDocButton();
+        }
+    });
+
+    plugin.addCommand({
+        langKey: "insertNotebookIndex",
+        hotkey: "⌥⌘N",
+        callback: async () => {
+            insertNotebookButton();
         }
     });
 
@@ -162,6 +170,14 @@ function addMenu(rect?: DOMRect) {
         accelerator: plugin.commands[2].customHotkey,
         click: () => {
             insertDocButton();
+        }
+    });
+    menu.addItem({
+        icon: "iconFilesRoot",
+        label: i18n.insertNotebookIndex,
+        accelerator: plugin.commands[3].customHotkey,
+        click: () => {
+            insertNotebookButton();
         }
     });
     menu.addSeparator();

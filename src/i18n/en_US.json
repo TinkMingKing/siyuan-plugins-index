@@ -1,6 +1,7 @@
 {
   "addTopBarIcon": "Insert Index",
   "insertIndex": "Insert Index",
+  "insertNotebookIndex": "Insert Notebook Index",
   "insertSubIndexoutline": "Insert Subdocument Index and Outline",
   "insertoutline": "Insert Outline",
   "settings": "Settings",
@@ -33,6 +34,7 @@
   "independentInsert":"Independent Insert",
   "nothasTemplate":"There is currently no template available",
   "cliketoAdd":"Click to add a template",
+  "loading": "Loading……",
   "settingsTab": {
     "name":"Settings",
     "items": {
@@ -101,6 +103,12 @@
       "templateDialog": {
         "title": "Template Name",
         "save": "Save"
+      },
+      "notebookDialog": {
+        "dialogtitle": "Insert Notebook Index",
+        "insert": "OK",
+        "title": "<span style='color: red;'>Destination notebook</span>",
+        "content": "Select the notebook to generate a directory"
       },
       "at": {
         "title": "Outline Prefix",

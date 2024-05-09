@@ -1,7 +1,8 @@
-import { Dialog } from 'siyuan';
+// import { Dialog } from 'siyuan';
 import { client, escapeHtml, i18n, isMobile, plugin } from './utils';
 import { CONFIG, settings } from './settings';
 import { IndexQueue, IndexQueueNode } from './indexnode';
+import { onCreatenbiButton } from './createnotebookindex';
 
 let indexQueue: IndexQueue;
 
@@ -47,7 +48,8 @@ export async function insert() {
  * 点击插入带大纲的目录
  * @returns void
  */
-export async function insertButton(dialog?: Dialog) {
+// export async function insertButton(dialog?: Dialog) {
+export async function insertButton() {
     //载入配置
     await settings.load();
 
@@ -83,14 +85,14 @@ export async function insertButton(dialog?: Dialog) {
         });
         return;
     }
-    dialog.destroy();
+    // dialog.destroy();
 }
 
 /**
  * 点击插入大纲
  * @returns void
  */
-export async function insertDocButton(dialog?: Dialog) {
+export async function insertDocButton() {
     //载入配置
     await settings.load();
 
@@ -120,8 +122,19 @@ export async function insertDocButton(dialog?: Dialog) {
         });
         return;
     }
+}
 
-    dialog.destroy();
+//todo
+/**
+ * 点击插入笔记本目录
+ * @returns void
+ */
+export async function insertNotebookButton() {
+    //载入配置
+    await settings.load();
+
+    onCreatenbiButton();
+
 }
 
 /**
@@ -330,7 +343,7 @@ function insertOutline(data: string, outlineData: any[], tab: number, stab: numb
 
 
 //获取图标
-function getSubdocIcon(icon: string, hasChild: boolean) {
+export function getSubdocIcon(icon: string, hasChild: boolean) {
     if (icon == '' || icon == undefined) {
         return hasChild ? "📑" : "📄";
     } else if (icon.indexOf(".") != -1) {
@@ -489,7 +502,7 @@ async function createIndex(notebook: any, ppath: any, pitem: IndexQueue, tab = 0
 
 
 //插入数据
-async function insertDataSimple(id: string, data: string) {
+export async function insertDataSimple(id: string, data: string) {
 
     await client.insertBlock({
         data: data,

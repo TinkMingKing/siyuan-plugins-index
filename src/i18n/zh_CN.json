@@ -1,6 +1,7 @@
 {
   "addTopBarIcon": "插入目录",
   "insertIndex": "插入目录",
+  "insertNotebookIndex": "插入笔记本目录",
   "insertSubIndexoutline": "插入子文档目录及大纲",
   "insertoutline": "插入当前文档大纲",
   "settings": "设置",
@@ -33,6 +34,7 @@
   "independentInsert": "独立插入",
   "nothasTemplate": "当前无模版",
   "cliketoAdd": "点击前往添加模板",
+  "loading": "加载中……",
   "settingsTab": {
     "name": "设置",
     "items": {
@@ -101,6 +103,12 @@
       "templateDialog": {
         "title": "模板名称",
         "save": "保存"
+      },
+      "notebookDialog": {
+        "dialogtitle": "插入笔记本目录",
+        "insert": "确定",
+        "title": "<span style='color: red;'>目标笔记本</span>",
+        "content": "选择要生成目录的笔记本"
       },
       "at": {
         "title": "大纲前缀",

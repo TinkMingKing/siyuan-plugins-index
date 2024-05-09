@@ -52,7 +52,7 @@
     let at = sat == undefined ? true : sat;
     let outlineType = soutlineType == undefined ? "ref" : soutlineType;
     let outlineAutoUpdate = soutlineAutoUpdate == undefined ? false : soutlineAutoUpdate;
-    let listTypeOutline = slistTypeOutline == undefined ? "unordered" : slistType;
+    let listTypeOutline = slistTypeOutline == undefined ? "unordered" : slistTypeOutline;
 
     let tabbarfocus = "normal";
     let normalfocus = "indexSettings";
