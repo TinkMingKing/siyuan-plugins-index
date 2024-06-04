@@ -14,6 +14,8 @@
 
 `CTRL + ALT + P`插入当前文档大纲
 
+`CTRL + ALT + N`插入笔记本目录
+
 # 反馈地址
 
 [反馈地址](https://ld246.com/article/1698684433007)

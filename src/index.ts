@@ -35,6 +35,7 @@ export default class IndexPlugin extends Plugin {
     init(){
         setI18n(this.i18n);
         setPlugin(this);
+        // console.log(this.getOpenedTab());
     }
 
     //输出事件detail

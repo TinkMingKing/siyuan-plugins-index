@@ -34,6 +34,7 @@ export async function insert() {
     indexQueue = new IndexQueue();
     await createIndex(block.data.box, block.data.path, indexQueue);
     data = queuePopAll(indexQueue, data);
+    console.log(data);
     if (data != '') {
         await insertData(parentId, data, "index");
     } else {
@@ -344,6 +345,7 @@ function insertOutline(data: string, outlineData: any[], tab: number, stab: numb
 
 //获取图标
 export function getSubdocIcon(icon: string, hasChild: boolean) {
+    console.log(icon);
     if (icon == '' || icon == undefined) {
         return hasChild ? "📑" : "📄";
     } else if (icon.indexOf(".") != -1) {
@@ -355,7 +357,12 @@ export function getSubdocIcon(icon: string, hasChild: boolean) {
             return `:${removeFileFormat}:`;
         }
     } else {
-        return String.fromCodePoint(parseInt(icon, 16));
+        let result = "";
+        icon.split("-").forEach(element => {
+            result += String.fromCodePoint(parseInt(element, 16))
+        });
+        console.log(result);
+        return result;
     }
 }
 

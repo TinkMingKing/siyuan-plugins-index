@@ -14,6 +14,8 @@ Right click on the plugin icon, show more actions
 
 `CTRL + ALT + P`Insert current document outline
 
+`CTRL + ALT + N`Insert notebook Index
+
 # Feedback
 
 [Feedback](https://ld246.com/article/1698684433007)
