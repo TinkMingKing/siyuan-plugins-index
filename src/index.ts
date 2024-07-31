@@ -2,8 +2,8 @@ import { Plugin } from "siyuan";
 import { setI18n, setPlugin } from "./utils";
 import { createDialog, initTopbar } from "./topbar";
 import { settings } from "./settings";
-import { buildDoc } from "./blockiconevent";
-import { updateIndex } from "./protyleevent";
+import { buildDoc } from "./event/blockiconevent";
+import { updateIndex } from "./event/protyleevent";
 
 export default class IndexPlugin extends Plugin {
 

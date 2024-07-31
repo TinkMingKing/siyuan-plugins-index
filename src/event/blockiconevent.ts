@@ -1,7 +1,7 @@
-import { IndexStackNode, IndexStack } from "./indexnode";
-import { insertAfter } from "./createIndex";
-import { settings } from "./settings";
-import { client, i18n } from "./utils";
+import { IndexStackNode, IndexStack } from "../indexnode";
+import { insertAfter } from "../creater/createIndex";
+import { settings } from "../settings";
+import { client, i18n } from "../utils";
 
 //目录栈
 let indexStack : IndexStack;

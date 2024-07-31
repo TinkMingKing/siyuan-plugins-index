@@ -6,7 +6,7 @@
     import TemplateNone from "./template-none.svelte";
     import { i18n, plugin } from "../utils";
     // import { getDocid } from "../createIndex";
-    import { eventBus } from "../enventbus";
+    import { eventBus } from "../event/eventbus";
 
     // export let onSubOutlineButton = function () {};
     // export let onDocOutlineButton = function () {};

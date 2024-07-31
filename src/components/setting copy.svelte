@@ -3,7 +3,7 @@
     import { settings } from "../settings";
     import SettingItem from "./setting-item.svelte";
     import { i18n } from "../utils";
-    import { getDocid } from "../createIndex";
+    import { getDocid } from "../creater/createIndex";
 
     beforeUpdate(async () => {
         await settings.load();

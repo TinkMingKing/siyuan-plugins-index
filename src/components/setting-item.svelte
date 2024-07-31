@@ -67,5 +67,12 @@
             <svg><use xlink:href="{content.icon}" /></svg>
             {content.text}
         </button>
+    {:else if type === "textarea"}
+        <input
+            class="b3-text-field fn__flex-center fn__size200"
+            id={settingKey}
+            bind:value={settingValue}
+            on:change={updateSetting}
+        >
     {/if}
 </label>

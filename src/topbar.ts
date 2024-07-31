@@ -3,11 +3,11 @@ import {
     //  fetchSyncPost,
     //  openTab
 } from "siyuan";
-import { insert, insertButton, insertDocButton, insertNotebookButton } from "./createIndex";
+import { insert, insertButton, insertDocButton, insertNotebookButton } from "./creater/createIndex";
 import { i18n, isMobile, plugin } from "./utils";
 import SettingsTab from "./components/setting.svelte"
 import { settings } from "./settings";
-import { onCreateTemplateButton, onGetTemplate } from "./createtemplate";
+import { onCreateTemplateButton, onGetTemplate } from "./creater/createtemplate";
 
 // //tab类型
 // const TAB_TYPE = "custom_tab";

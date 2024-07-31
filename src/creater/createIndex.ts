@@ -1,7 +1,7 @@
 // import { Dialog } from 'siyuan';
-import { client, escapeHtml, i18n, isMobile, plugin } from './utils';
-import { CONFIG, settings } from './settings';
-import { IndexQueue, IndexQueueNode } from './indexnode';
+import { client, escapeHtml, i18n, isMobile, plugin } from '../utils';
+import { CONFIG, settings } from '../settings';
+import { IndexQueue, IndexQueueNode } from '../indexnode';
 import { onCreatenbiButton } from './createnotebookindex';
 
 let indexQueue: IndexQueue;

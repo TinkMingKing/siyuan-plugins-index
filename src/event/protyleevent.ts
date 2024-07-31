@@ -1,5 +1,5 @@
-import { insertAuto, insertOutlineAuto } from "./createIndex";
-import { isMobile } from "./utils";
+import { insertAuto, insertOutlineAuto } from "../creater/createIndex";
+import { isMobile } from "../utils";
 // import { settings } from "./settings";
 
 /**

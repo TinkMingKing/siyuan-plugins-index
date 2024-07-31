@@ -1,8 +1,8 @@
 import { Dialog, fetchSyncPost, showMessage } from "siyuan";
-import { i18n } from "./utils";
-import TemplateDialog from "./components/template-dialog.svelte"
-import { settings } from "./settings";
-import { eventBus } from "./enventbus";
+import { i18n } from "../utils";
+import TemplateDialog from "../components/template-dialog.svelte"
+import { settings } from "../settings";
+import { eventBus } from "../event/eventbus";
 
 /**
  * 创建配置模板
