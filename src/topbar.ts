@@ -7,7 +7,7 @@ import { insert, insertButton, insertDocButton, insertNotebookButton } from "./c
 import { i18n, isMobile, plugin } from "./utils";
 import SettingsTab from "./components/setting.svelte"
 import { settings } from "./settings";
-import { onCreateTemplateButton, onGetTemplate } from "./creater/createtemplate";
+import { onGetTemplate } from "./creater/createtemplate";
 
 // //tab类型
 // const TAB_TYPE = "custom_tab";
@@ -137,12 +137,6 @@ export async function createDialog() {
 
     new SettingsTab({
         target: div,
-        props: {
-            // onSubOutlineButton: () => { insertButton(dialog) },
-            // onDocOutlineButton: () => { insertDocButton(dialog) },
-            onCreateTemplateButton: () => onCreateTemplateButton(),
-            onGetIndexTemplate: () => onGetTemplate()
-        }
     });
 }
 

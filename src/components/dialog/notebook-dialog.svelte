@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { client, i18n } from "../utils";
-    import SettingItem from "./setting-item.svelte";
-    import { settings } from "../settings";
+    import { client, i18n } from "../../utils";
+    import SettingItem from "../setting-item.svelte";
+    import { settings } from "../../settings";
 
     export let onSave = function () {};
 

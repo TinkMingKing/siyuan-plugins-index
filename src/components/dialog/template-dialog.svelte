@@ -1,5 +1,5 @@
 <script>
-    import { i18n } from "../utils";
+    import { i18n } from "../../utils";
 
     export let onSave = function () {};;
 </script>

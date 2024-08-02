@@ -1,5 +1,5 @@
 <script>
-    import { eventBus } from "../enventbus";
+    import { eventBus } from "../event/eventbus";
     import { i18n } from "../utils";
 
     export let tab;

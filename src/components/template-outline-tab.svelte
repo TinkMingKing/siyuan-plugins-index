@@ -3,7 +3,7 @@
     import { settings } from "../settings";
     import { i18n } from "../utils";
     import TemplateItem from "./template-item.svelte";
-    import { eventBus } from "../enventbus";
+    import { eventBus } from "../event/eventbus";
     export let name;
     let item;
     let realName = name.substring(9);

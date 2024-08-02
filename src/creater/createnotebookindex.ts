@@ -1,6 +1,6 @@
 import { Dialog } from "siyuan";
 import { client, escapeHtml, i18n } from "../utils";
-import NotebookDialog from "./components/notebook-dialog.svelte"
+import NotebookDialog from "../components/dialog/notebook-dialog.svelte"
 import { settings } from "../settings";
 import { getDocid, getSubdocIcon, insertDataSimple } from "./createIndex";
 // import { settings } from "./settings";
