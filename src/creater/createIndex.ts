@@ -113,7 +113,6 @@ export async function insertDocButton() {
     let outlineData = await requestGetDocOutline(parentId);
     // console.log(outlineData);
     data = insertOutline(data, outlineData, 0, 0);
-
     if (data != '') {
         await insertData(parentId, data, "outline");
     } else {
@@ -345,7 +344,7 @@ function insertOutline(data: string, outlineData: any[], tab: number, stab: numb
 
 //获取图标
 export function getSubdocIcon(icon: string, hasChild: boolean) {
-    console.log(icon);
+    // console.log("getSubdocIcon", icon, 'hasChild', hasChild);
     if (icon == '' || icon == undefined) {
         return hasChild ? "📑" : "📄";
     } else if (icon.indexOf(".") != -1) {
@@ -356,12 +355,14 @@ export function getSubdocIcon(icon: string, hasChild: boolean) {
             let removeFileFormat = icon.substring(0, icon.lastIndexOf("."));
             return `:${removeFileFormat}:`;
         }
+    } else if (icon.includes("api/icon/getDynamicIcon")) {
+        return `![](${icon})`;
     } else {
         let result = "";
         icon.split("-").forEach(element => {
             result += String.fromCodePoint(parseInt(element, 16))
         });
-        console.log(result);
+        // console.log("getSubdocIcon result", result);
         return result;
     }
 }
@@ -645,7 +646,7 @@ function queuePopAll(queue: IndexQueue, data: string) {
             }
         }
         data += item.text;
-        // console.log(item.text);
+        // console.log("queuePopAll", item.text);
 
         if (!item.children.isEmpty()) {
             data = queuePopAll(item.children, data);

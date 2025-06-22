@@ -111,7 +111,7 @@ if (fs.existsSync(targetPath)) {
     log(`Failed! Target directory  ${targetPath} already exists`);
 } else {
     //创建软链接
-    fs.symlinkSync(`${process.cwd()}/dev`, targetPath, 'junction');
+    fs.symlinkSync(`${process.cwd()}/dev`, targetPath, 'dir');
     log(`Done! Created symlink ${targetPath}`);
 }
 
